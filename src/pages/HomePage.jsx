@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Character from "../components/Character";
-import { TOKEN_NAME } from "../context/auth.context"; // Importa el nombre del token desde el contexto de autenticación
+import { TOKEN_NAME } from "../context/auth.context";
 
 export const HomePage = () => {
   const [characters, setCharacters] = useState([]);
@@ -13,9 +13,9 @@ export const HomePage = () => {
 
   const getCharacters = async () => {
     try {
-      const token = localStorage.getItem(TOKEN_NAME); // Obtén el token de autenticación del localStorage
+      const token = localStorage.getItem(TOKEN_NAME);
       const res = await axios.get("http://localhost:5005/api/characters", {
-        headers: { Authorization: `Bearer ${token}` }, // Pasa el token en el encabezado de autorización
+        headers: { Authorization: `Bearer ${token}` },
       });
       setCharacters(res.data);
     } catch (error) {
@@ -25,7 +25,7 @@ export const HomePage = () => {
 
   const renderCharacters = () => {
     return characters.map((character) => (
-      <Character key={character._id} {...character} image={character.image} />
+      <Character key={character._id} {...character} />
     ));
   };
 
@@ -38,9 +38,6 @@ export const HomePage = () => {
         </li>
         <li>
           <Link to="/spells">Spells</Link>
-        </li>
-        <li>
-          <Link to="/characters">Characters</Link>
         </li>
       </ul>
 
@@ -58,6 +55,7 @@ export const HomePage = () => {
 // import { Link } from "react-router-dom";
 // import axios from "axios";
 // import Character from "../components/Character";
+// import { TOKEN_NAME } from "../context/auth.context"; // Importa el nombre del token desde el contexto de autenticación
 
 // export const HomePage = () => {
 //   const [characters, setCharacters] = useState([]);
@@ -68,7 +66,10 @@ export const HomePage = () => {
 
 //   const getCharacters = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:5005/api/characters");
+//       const token = localStorage.getItem(TOKEN_NAME); // Obtén el token de autenticación del localStorage
+//       const res = await axios.get("http://localhost:5005/api/characters", {
+//         headers: { Authorization: `Bearer ${token}` }, // Pasa el token en el encabezado de autorización
+//       });
 //       setCharacters(res.data);
 //     } catch (error) {
 //       console.log(error);
@@ -91,7 +92,9 @@ export const HomePage = () => {
 //         <li>
 //           <Link to="/spells">Spells</Link>
 //         </li>
-//         <li>{/* <Link to="/characters">Characters</Link> */}</li>
+//         {/* <li>
+//           <Link to="/characters">Characters</Link>
+//         </li> */}
 //       </ul>
 
 //       <h2>Characters</h2>
@@ -100,27 +103,6 @@ export const HomePage = () => {
 //       ) : (
 //         <div>{renderCharacters()}</div>
 //       )}
-//     </div>
-//   );
-// };
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// export const HomePage = () => {
-//   return (
-//     <div>
-//       <h1>SOY LA HomePage</h1>
-//       <ul>
-//         <li>
-//           <Link to="/contraptions">Contraptions</Link>
-//         </li>
-//         <li>
-//           <Link to="/spellsbook">SpellsBook</Link>
-//         </li>
-//         <li>
-//           <Link to="/characters">Characters</Link>
-//         </li>
-//       </ul>
 //     </div>
 //   );
 // };

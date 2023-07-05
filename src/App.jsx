@@ -14,7 +14,6 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-
       <Routes>
         <Route
           path="/"
@@ -32,14 +31,7 @@ function App() {
             </Private>
           }
         />
-        <Route
-          path="/contraptions/:id"
-          element={
-            <Private>
-              <ContraptionDetailPage />
-            </Private>
-          }
-        />
+
         <Route
           path="/spells"
           element={
@@ -53,6 +45,14 @@ function App() {
           element={
             <Private>
               <CharactersPage />
+            </Private>
+          }
+        />
+        <Route
+          path="/contraptions/:id"
+          element={
+            <Private>
+              <ContraptionDetailPage />
             </Private>
           }
         />
