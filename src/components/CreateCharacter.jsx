@@ -1,94 +1,93 @@
-import React, { useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import Character from "../components/Character";
+import CreateCharacter from "../components/CreateCharacter";
 
-export default function CreateCharacter({ getCharacters }) {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [requiredFields] = useState(["name", "race", "class"]); //CAMPOS OBLIGATORIOS
-  const [optionalFields] = useState(["level", "background", "alignment"]);//CAMPOS OPCIONALES
+function CharactersPage() {
+  const [characters, setCharacters] = useState(null);
+  const [showCreateCharacter, setShowCreateCharacter] = useState(false);
 
-  const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
+  useEffect(() => {
+    getCharacters();
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // COMPRUEBO QUE LOS CAMPOS OBLIGATORIOS ESTAN OK
-    const missingFields = requiredFields.filter((field) => !data[field]);
-
-    if (missingFields.length > 0) {
-      console.log("Falta completar los siguientes campos:", missingFields);
-      return;
-    }
-
-    setLoading(true);
-
+  const getCharacters = async () => {
     try {
-      await axios.post("http://localhost:5005/api/characters", data);
-
-      getCharacters();
-      setLoading(false);
+      const res = await axios.get("http://localhost:5005/api/characters");
+      setCharacters(res.data);
     } catch (error) {
       console.log(error);
-      setLoading(false);
     }
+  };
+
+  const deleteCharacter = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5005/api/characters/${id}`);
+      getCharacters();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const renderCharacters = () => {
+    return characters.map((character) => (
+      <Character
+        deleteCharacter={deleteCharacter}
+        key={character._id}
+        {...character}
+      />
+    ));
+  };
+
+  const handleAddCharacter = () => {
+    setShowCreateCharacter(true);
+  };
+
+  const handleCancelAddCharacter = () => {
+    setShowCreateCharacter(false);
   };
 
   return (
-    <div>
-      <h2>Create Character</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={data.name || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="race">Race</label>
-          <input
-            type="text"
-            name="race"
-            value={data.race || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="class">Class</label>
-          <input
-            type="text"
-            name="class"
-            value={data.class || ""}
-            onChange={handleChange}
-          />
-        </div>
-     {/* CAMPOS OPCIONALES */}
-        {optionalFields.map((field) => (
-          <div key={field}>
-            <label htmlFor={field}>{field}</label>
-            <select
-              name={field}
-              value={data[field] || ""}
-              onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </select>
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <div>
+        {!showCreateCharacter && (
+          <div style={{ textAlign: "right" }}>
+            <button onClick={handleAddCharacter}>Añadir personaje</button>
           </div>
-        ))}
+        )}
+
+        {showCreateCharacter && (
+          <div>
+            <CreateCharacter
+              getCharacters={getCharacters}
+              onCancel={handleCancelAddCharacter}
+            />
+          </div>
+        )}
+
         <div>
-          <button type="submit">Save</button>
+          {!characters ? (
+            <div style={{ textAlign: "center" }}>
+              <p>No hay personajes</p>
+            </div>
+          ) : characters.length ? (
+            <div>{renderCharacters()}</div>
+          ) : (
+            <div style={{ textAlign: "center" }}>
+              <p>No hay personajes</p>
+            </div>
+          )}
         </div>
-      </form>
+
+        {!showCreateCharacter && !characters && (
+          <div style={{ textAlign: "center" }}>
+            <button onClick={handleAddCharacter}>Añadir personaje</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+
+export default CharactersPage;
+

@@ -16,7 +16,7 @@ export default function CreateSpell({ getSpells }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:5005/api/spells", data);
+      await axios.post("http://localhost:5005/api/spellsbook", data);
 
       getSpells();
       setLoading(false);

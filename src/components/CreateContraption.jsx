@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-// import todoService from "../services/todo.service";
+
 
 export default function CreateContraption({ getContraptions }) {
   const [data, setData] = useState({});
@@ -17,9 +17,8 @@ export default function CreateContraption({ getContraptions }) {
     e.preventDefault();
     setLoading(true);
     try {
-      // await axios.post(`${import.meta.env.VITE_API_URL}/todos`, data);// supongo que al 5005 que es donde esta ek backend
-      //   await todoService.create(data);
-      await axios.post(`http://localhost:5005/api/contraptions`, data); // supongo que al 5005 que es donde esta ek backend
+    
+      await axios.post(`http://localhost:5005/api/contraptions`, data); 
 
       getContraptions();
       setLoading(false);

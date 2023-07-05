@@ -1,14 +1,8 @@
-// export const SpellsPage = () => {
-//   return (
-//     <div>
-//       <h1>SOY SpellsPage</h1>
-//     </div>
-//   );
-// };
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Spell from "../components/Spell";
+import  Spell  from "../components/Spell";
 import CreateSpell from "../components/CreateSpell";
+import { TOKEN_NAME } from "../context/auth.context";
 
 function SpellsPage() {
   const [spells, setSpells] = useState(null);
@@ -20,7 +14,10 @@ function SpellsPage() {
 
   const getSpells = async () => {
     try {
-      const res = await axios.get("http://localhost:5005/api/spells");
+      const token = localStorage.getItem(TOKEN_NAME);
+      const res = await axios.get("http://localhost:5005/api/spells", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setSpells(res.data);
     } catch (error) {
       console.log(error);
@@ -29,7 +26,10 @@ function SpellsPage() {
 
   const deleteSpell = async (id) => {
     try {
-      await axios.delete(`http://localhost:5005/api/spells/${id}`);
+      const token = localStorage.getItem(TOKEN_NAME);
+      await axios.delete(`http://localhost:5005/api/spells/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       getSpells();
     } catch (error) {
       console.log(error);
@@ -37,9 +37,13 @@ function SpellsPage() {
   };
 
   const renderSpells = () => {
-    return spells.map((spell) => (
-      <Spell deleteSpell={deleteSpell} key={spell._id} {...spell} />
-    ));
+    if (spells && spells.length > 0) {
+      return spells.map((spell) => (
+        <Spell deleteSpell={deleteSpell} key={spell._id} {...spell} />
+      ));
+    } else {
+      return <p>No hay datos</p>;
+    }
   };
 
   const handleAddSpell = () => {
@@ -50,10 +54,22 @@ function SpellsPage() {
     setShowCreateSpell(false);
   };
 
+  const handleCreateSpell = async (spellData) => {
+    try {
+      const token = localStorage.getItem(TOKEN_NAME);
+      await axios.post("http://localhost:5005/api/spells", spellData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      getSpells();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div>
-        {!showCreateSpell && spells && (
+        {!showCreateSpell && (
           <div style={{ textAlign: "right" }}>
             <button onClick={handleAddSpell}>Añadir hechizo</button>
           </div>
@@ -62,7 +78,7 @@ function SpellsPage() {
         {showCreateSpell && (
           <div>
             <CreateSpell
-              getSpells={getSpells}
+              getSpells={handleCreateSpell}
               onCancel={handleCancelAddSpell}
             />
           </div>
@@ -71,12 +87,10 @@ function SpellsPage() {
         <div>
           {!spells ? (
             <div style={{ textAlign: "center" }}>
-              <p>nada</p>
+              <p>Cargando...</p>
             </div>
-          ) : spells && spells.length ? (
-            <div>{renderSpells()}</div>
           ) : (
-            <p>No hay datos</p>
+            <div>{renderSpells()}</div>
           )}
         </div>
       </div>

@@ -10,12 +10,7 @@ function AuthProviderWrapper({ children }) {
     loading: true,
     error: null,
   });
-  // const AuthContextWrapper = ({ children }) => {
-  //   const [userData, setUserData] = useState({
-  //     user: null,
-  //     loading: true,
-  //     error: null,
-  //   });
+
 
   useEffect(() => {
     authenticate();

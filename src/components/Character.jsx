@@ -9,12 +9,17 @@ export default function Character({
   level,
   background,
   alignment,
+  image,
   getCharacters,
   deleteCharacter,
 }) {
+  const defaultImage =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQztsPd6Bijg8DIkFZW_nMaofbIRq_Pm0GR3w&usqp=CAU";
+
   return (
     <div>
       <h1>Name: {name}</h1>
+      <img src={image || defaultImage} alt={name} />
       <p>Race: {race}</p>
       <p>Class: {characterClass}</p>
       <p>Level: {level}</p>
@@ -28,3 +33,4 @@ export default function Character({
     </div>
   );
 }
+

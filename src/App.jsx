@@ -6,7 +6,7 @@ import ErrorPage from "./pages/ErrorPage";
 import { HomePage } from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
-import SpellsPage from "./pages/SpellsPage";
+import SpellsBookPage from "./pages/SpellsBookPage";
 import ContraptionsPage from "./pages/ContraptionsPage";
 import CharactersPage from "./pages/CharactersPage";
 
@@ -44,7 +44,7 @@ function App() {
           path="/spells"
           element={
             <Private>
-              <SpellsPage />
+              <SpellsBookPage />
             </Private>
           }
         />
