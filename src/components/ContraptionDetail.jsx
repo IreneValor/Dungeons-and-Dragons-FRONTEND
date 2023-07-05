@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import EditContraptionForm from "./EditContraptionForm";
 
 export default function ContraptionDetail({
@@ -10,10 +9,9 @@ export default function ContraptionDetail({
   quantity,
   done,
   getContraption,
-  tokenName,
 }) {
   const [isEditing, setIsEditing] = useState(false);
-
+  //me falta meter const [contraption, setContraption] = useState(null);
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -24,19 +22,7 @@ export default function ContraptionDetail({
 
   const redirectToDetail = () => {
     setIsEditing(false);
-  };
-
-  const handleDeleteContraption = async () => {
-    try {
-      const token = localStorage.getItem(tokenName);
-      await axios.delete(`http://localhost:5005/api/contraptions/${_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      // Opcionalmente, puedes redirigir al usuario a una página diferente después de eliminar.
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }; //PARA QUE REDIRECCIONE AL EDITAR
 
   return (
     <>
@@ -55,7 +41,6 @@ export default function ContraptionDetail({
           getContraption={getContraption}
           redirectToDetail={redirectToDetail}
           onClose={handleFormClose}
-          tokenName={tokenName}
         />
       ) : (
         <>
@@ -68,8 +53,7 @@ export default function ContraptionDetail({
               onChange={() => {}}
             />
           </label>
-          <button onClick={handleEditClick}>Editar</button>
-          <button onClick={handleDeleteContraption}>Borrar artilugio</button>
+          <button onClick={handleEditClick}>✏️</button>
         </>
       )}
     </>

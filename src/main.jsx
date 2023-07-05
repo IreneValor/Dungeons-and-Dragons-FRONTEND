@@ -1,29 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+// import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import App from "./App";
-import { AuthProviderWrapper } from "./context/auth.context";
+import { AuthProviderWrapper } from "./context/auth.context.jsx";
 
-ReactDOM.render(
-  <Router>
-    <AuthProviderWrapper>
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <AuthProviderWrapper>
+    <Router>
       <App />
-    </AuthProviderWrapper>
-  </Router>,
-  document.getElementById("root")
+    </Router>
+   </AuthProviderWrapper>
 );
-
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import App from "./App.jsx";
-// // import "./index.css";
-// import { BrowserRouter as Router } from "react-router-dom";
-// import { AuthProviderWrapper } from "./context/auth.context.jsx";
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <AuthProviderWrapper>
-//     <Router>
-//       <App />
-//     </Router>
-//    </AuthProviderWrapper>
-// );
