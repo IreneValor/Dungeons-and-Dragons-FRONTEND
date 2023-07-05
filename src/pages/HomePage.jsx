@@ -23,9 +23,29 @@ export const HomePage = () => {
     }
   };
 
+  const deleteCharacter = async (id) => {
+    try {
+      const token = localStorage.getItem(TOKEN_NAME);
+      await axios.delete(`http://localhost:5005/api/characters/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      getCharacters(); // Actualiza la lista de personajes después de borrar uno
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderCharacters = () => {
     return characters.map((character) => (
-      <Character key={character._id} {...character} image={character.image} />
+      <Character
+        key={character._id}
+        {...character}
+        image={character.image}
+        getCharacters={getCharacters} // Pasa la función getCharacters al componente Character
+        deleteCharacter={deleteCharacter} // Pasa la función deleteCharacter al componente Character
+      />
     ));
   };
 
@@ -39,9 +59,6 @@ export const HomePage = () => {
         <li>
           <Link to="/spells">Spells</Link>
         </li>
-        <li>
-          <Link to="/characters">Characters</Link>
-        </li>
       </ul>
 
       <h2>Characters</h2>
@@ -54,73 +71,3 @@ export const HomePage = () => {
   );
 };
 
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-// import Character from "../components/Character";
-
-// export const HomePage = () => {
-//   const [characters, setCharacters] = useState([]);
-
-//   useEffect(() => {
-//     getCharacters();
-//   }, []);
-
-//   const getCharacters = async () => {
-//     try {
-//       const res = await axios.get("http://localhost:5005/api/characters");
-//       setCharacters(res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const renderCharacters = () => {
-//     return characters.map((character) => (
-//       <Character key={character._id} {...character} image={character.image} />
-//     ));
-//   };
-
-//   return (
-//     <div>
-//       <h1>SOY LA HomePage</h1>
-//       <ul>
-//         <li>
-//           <Link to="/contraptions">Contraptions</Link>
-//         </li>
-//         <li>
-//           <Link to="/spells">Spells</Link>
-//         </li>
-//         <li>{/* <Link to="/characters">Characters</Link> */}</li>
-//       </ul>
-
-//       <h2>Characters</h2>
-//       {characters.length === 0 ? (
-//         <p>No hay personajes</p>
-//       ) : (
-//         <div>{renderCharacters()}</div>
-//       )}
-//     </div>
-//   );
-// };
-// import React from "react";
-// import { Link } from "react-router-dom";
-
-// export const HomePage = () => {
-//   return (
-//     <div>
-//       <h1>SOY LA HomePage</h1>
-//       <ul>
-//         <li>
-//           <Link to="/contraptions">Contraptions</Link>
-//         </li>
-//         <li>
-//           <Link to="/spellsbook">SpellsBook</Link>
-//         </li>
-//         <li>
-//           <Link to="/characters">Characters</Link>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// };
