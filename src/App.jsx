@@ -9,6 +9,10 @@ import LoginPage from "./pages/LoginPage";
 import SpellsBookPage from "./pages/SpellsBookPage";
 import ContraptionsPage from "./pages/ContraptionsPage";
 import CharactersPage from "./pages/CharactersPage";
+// import Spell from "./components/Spell";
+// import SpellsPage from "./pages/SpellsBookPage";
+import SpellDetailPage from "./pages/SpellDetailPage";
+import { CharacterDetailPage } from "./pages/CharacterDetailPage";
 
 function App() {
   return (
@@ -49,10 +53,26 @@ function App() {
           }
         />
         <Route
+          path="/spells/:id"
+          element={
+            <Private>
+              <SpellDetailPage />
+            </Private>
+          }
+        />
+        <Route
           path="/characters"
           element={
             <Private>
               <CharactersPage />
+            </Private>
+          }
+        />
+        <Route
+          path="/characters/:id"
+          element={
+            <Private>
+              <CharacterDetailPage/>
             </Private>
           }
         />
