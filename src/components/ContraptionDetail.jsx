@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EditContraptionForm from "./EditContraptionForm";
+import { TOKEN_NAME } from "../context/auth.context";
 
 export default function ContraptionDetail({
   _id,
@@ -11,7 +12,7 @@ export default function ContraptionDetail({
   getContraption,
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  //me falta meter const [contraption, setContraption] = useState(null);
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -22,7 +23,7 @@ export default function ContraptionDetail({
 
   const redirectToDetail = () => {
     setIsEditing(false);
-  }; //PARA QUE REDIRECCIONE AL EDITAR
+  }; //FOR REDIRECTING AFTER EDITING
 
   return (
     <>
@@ -41,6 +42,7 @@ export default function ContraptionDetail({
           getContraption={getContraption}
           redirectToDetail={redirectToDetail}
           onClose={handleFormClose}
+          TOKEN_NAME={TOKEN_NAME}
         />
       ) : (
         <>

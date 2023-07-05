@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-
+import { TOKEN_NAME } from "../context/auth.context";
 
 export default function CreateContraption({ getContraptions }) {
   const [data, setData] = useState({});
@@ -17,8 +17,11 @@ export default function CreateContraption({ getContraptions }) {
     e.preventDefault();
     setLoading(true);
     try {
-    
-      await axios.post(`http://localhost:5005/api/contraptions`, data); 
+      await axios.post(`http://localhost:5005/api/contraptions`, data, {
+        headers: {
+          Authorization: `Bearer ${TOKEN_NAME}`,
+        },
+      });
 
       getContraptions();
       setLoading(false);
@@ -27,6 +30,7 @@ export default function CreateContraption({ getContraptions }) {
       setLoading(false);
     }
   };
+
   return (
     <div>
       <h2>Crear artilugio</h2>
@@ -41,7 +45,7 @@ export default function CreateContraption({ getContraptions }) {
           />
         </div>
         <div>
-          <label htmlFor="type">type</label>
+          <label htmlFor="type">Type</label>
           <textarea
             multiple
             type="text"
@@ -60,7 +64,7 @@ export default function CreateContraption({ getContraptions }) {
           />
         </div>
         <div>
-          <label htmlFor="quantity">quantity</label>
+          <label htmlFor="quantity">Quantity</label>
           <input
             type="number"
             name="quantity"
