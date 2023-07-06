@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
-import { TOKEN_NAME } from "../context/auth.context";
+import contraptionService from "../services/contraption.service";
+
 
 export default function CreateContraption({ getContraptions }) {
   const [data, setData] = useState({});
@@ -17,13 +17,7 @@ export default function CreateContraption({ getContraptions }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      await axios.post("http://localhost:5005/api/contraptions", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      await contraptionService.create(data);
       getContraptions();
       setLoading(false);
     } catch (error) {
@@ -37,7 +31,7 @@ export default function CreateContraption({ getContraptions }) {
       <h2>Crear artilugio</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="title">Nombre</label>
+          <label htmlFor="name">Nombre</label>
           <input
             type="text"
             name="name"
@@ -99,9 +93,10 @@ export default function CreateContraption({ getContraptions }) {
 //     e.preventDefault();
 //     setLoading(true);
 //     try {
-//       await axios.post(`http://localhost:5005/api/contraptions`, data, {
+//       const token = localStorage.getItem(TOKEN_NAME);
+//       await axios.post("http://localhost:5005/api/contraptions", data, {
 //         headers: {
-//           Authorization: `Bearer ${TOKEN_NAME}`,
+//           Authorization: `Bearer ${token}`,
 //         },
 //       });
 
@@ -118,7 +113,7 @@ export default function CreateContraption({ getContraptions }) {
 //       <h2>Crear artilugio</h2>
 //       <form onSubmit={handleSubmit}>
 //         <div>
-//           <label htmlFor="title">Name</label>
+//           <label htmlFor="title">Nombre</label>
 //           <input
 //             type="text"
 //             name="name"
@@ -127,7 +122,7 @@ export default function CreateContraption({ getContraptions }) {
 //           />
 //         </div>
 //         <div>
-//           <label htmlFor="type">Type</label>
+//           <label htmlFor="type">Tipo</label>
 //           <textarea
 //             multiple
 //             type="text"
@@ -137,7 +132,7 @@ export default function CreateContraption({ getContraptions }) {
 //           ></textarea>
 //         </div>
 //         <div>
-//           <label htmlFor="description">Description</label>
+//           <label htmlFor="description">Descripción</label>
 //           <input
 //             type="text"
 //             name="description"
@@ -146,7 +141,7 @@ export default function CreateContraption({ getContraptions }) {
 //           />
 //         </div>
 //         <div>
-//           <label htmlFor="quantity">Quantity</label>
+//           <label htmlFor="quantity">Cantidad</label>
 //           <input
 //             type="number"
 //             name="quantity"

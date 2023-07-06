@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { TOKEN_NAME } from "../context/auth.context";
+import contraptionService from "../services/contraption.service";
+
 
 export default function Contraption({
   _id,
@@ -11,8 +12,13 @@ export default function Contraption({
   getContraptions,
   deleteContraption,
 }) {
-  const handleDelete = () => {
-    deleteContraption(_id);
+  const handleDelete = async () => {
+    try {
+      await contraptionService.delete(_id);
+      deleteContraption(_id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -26,9 +32,7 @@ export default function Contraption({
     </div>
   );
 }
-
 // import { Link } from "react-router-dom";
-// import axios from "axios";
 // import { TOKEN_NAME } from "../context/auth.context";
 
 // export default function Contraption({
@@ -41,34 +45,18 @@ export default function Contraption({
 //   getContraptions,
 //   deleteContraption,
 // }) {
-//   const handleDelete = async () => {
-//     try {
-//       const token = localStorage.getItem(TOKEN_NAME);
-//       await axios.delete(`http://localhost:5005/api/contraptions/${_id}`, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       getContraptions(); // Update the list of contraptions after deletion
-//     } catch (error) {
-//       console.log(error);
-//     }
+//   const handleDelete = () => {
+//     deleteContraption(_id);
 //   };
 
 //   return (
 //     <div>
 //       <h1>Name: {name}</h1>
-//       <p>Type: {type}</p>
-//       <p>Description: {description}</p>
-//       <p>Quantity: {quantity}</p>
-//       <p>Done: {done ? "Yes" : "No"}</p>
 
 //       <button onClick={handleDelete}>🗑</button>
 //       <Link to={`/contraptions/${_id}`}>
-//         <button>View Details</button>
+//         <button>ver detalles</button>
 //       </Link>
 //     </div>
 //   );
 // }
-
-

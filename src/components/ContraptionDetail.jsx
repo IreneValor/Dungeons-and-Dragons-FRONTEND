@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EditContraptionForm from "./EditContraptionForm";
-import { TOKEN_NAME } from "../context/auth.context";
+// import contraptionService from "../services/contraptionService";
 
 export default function ContraptionDetail({
   _id,
@@ -41,7 +41,7 @@ export default function ContraptionDetail({
           done={done}
           getContraption={getContraption}
           redirectToDetail={redirectToDetail}
-          TOKEN_NAME={TOKEN_NAME}
+          onClose={handleFormClose}
         />
       ) : (
         <>
