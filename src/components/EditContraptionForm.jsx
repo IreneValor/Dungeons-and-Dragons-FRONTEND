@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { TOKEN_NAME } from "../context/auth.context";
 
 export default function EditContraptionForm({
   _id,
@@ -11,8 +11,6 @@ export default function EditContraptionForm({
   getContraption,
   redirectToDetail,
 }) {
-  const navigate = useNavigate();
-
   const [data, setData] = useState({
     _id,
     name: name || "",
@@ -41,9 +39,13 @@ export default function EditContraptionForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5005/api/contraptions/${_id}`, data);
+      const token = localStorage.getItem(TOKEN_NAME);
+      await axios.put(`http://localhost:5005/api/contraptions/${_id}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       getContraption();
-      // navigate(`/contraptions/${_id}`);
       redirectToDetail();
     } catch (error) {
       console.log(error);

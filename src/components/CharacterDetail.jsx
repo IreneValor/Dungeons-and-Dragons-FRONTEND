@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import { Link } from "react-router-dom";
-
+import { TOKEN_NAME } from "../context/auth.context";
 export default function Character({
   _id,
   name,
@@ -10,7 +10,7 @@ export default function Character({
   background,
   alignment,
   getCharacters,
-  deleteCharacter,
+  // deleteCharacter,
 }) {
   const [abilityScores, setAbilityScores] = useState({
     strength: {
@@ -90,6 +90,20 @@ export default function Character({
       },
     }));
   };
+  const deleteCharacter = async (id) => {
+    try {
+      const token = localStorage.getItem(TOKEN_NAME);
+      await axios.delete(`http://localhost:5005/api/characters/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      getCharacters(); // Actualiza la lista de personajes después de borrar uno
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <h1>Name: {name}</h1>

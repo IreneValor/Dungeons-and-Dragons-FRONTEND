@@ -9,10 +9,8 @@ import LoginPage from "./pages/LoginPage";
 import SpellsBookPage from "./pages/SpellsBookPage";
 import ContraptionsPage from "./pages/ContraptionsPage";
 import CharactersPage from "./pages/CharactersPage";
-// import Spell from "./components/Spell";
-// import SpellsPage from "./pages/SpellsBookPage";
 import SpellDetailPage from "./pages/SpellDetailPage";
-import { CharacterDetailPage } from "./pages/CharacterDetailPage";
+import CharacterDetailPage from "./pages/CharacterDetailPage";
 
 function App() {
   return (
@@ -72,7 +70,7 @@ function App() {
           path="/characters/:id"
           element={
             <Private>
-              <CharacterDetailPage/>
+              <CharacterDetailPage />
             </Private>
           }
         />

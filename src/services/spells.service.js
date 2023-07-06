@@ -1,4 +1,6 @@
 import apiInstance from "./apiInstance";
+import axios from "axios";
+import { TOKEN_NAME } from "../context/auth.context";
 
 class SpellsService {
   constructor() {
