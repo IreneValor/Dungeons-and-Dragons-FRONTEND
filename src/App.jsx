@@ -11,6 +11,7 @@ import ContraptionsPage from "./pages/ContraptionsPage";
 import CharactersPage from "./pages/CharactersPage";
 import SpellDetailPage from "./pages/SpellDetailPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
+import "bootstrap/dist/css/bootstrap.css";
 
 function App() {
   return (

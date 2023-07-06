@@ -12,7 +12,7 @@ export default function Character({
   level,
   background,
   alignment,
-  getCharacters,
+
 }) {
   const [abilityScores, setAbilityScores] = useState({
     strength: {

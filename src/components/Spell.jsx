@@ -13,7 +13,7 @@ export default function Spell({ _id, name, type, description, deleteSpell }) {
   };
 
   return (
-    <div>
+    <div key={_id}>
       <h1>Name: {name}</h1>
       <p>Type: {type}</p>
       <p>Description: {description}</p>
@@ -25,6 +25,7 @@ export default function Spell({ _id, name, type, description, deleteSpell }) {
     </div>
   );
 }
+
 // import React from "react";
 // import { Link } from "react-router-dom";
 // import axios from "axios";
