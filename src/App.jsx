@@ -12,6 +12,8 @@ import CharactersPage from "./pages/CharactersPage";
 import SpellDetailPage from "./pages/SpellDetailPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
 import "bootstrap/dist/css/bootstrap.css";
+// import CreateCharacter from "./components/CreateCharacter";
+import CreateCharacterPage from "./pages/CreateCharacterPage";
 
 function App() {
   return (
@@ -59,19 +61,27 @@ function App() {
             </Private>
           }
         />
-        <Route
+        {/* <Route
           path="/characters"
           element={
             <Private>
               <CharactersPage />
             </Private>
           }
-        />
+        /> */}
         <Route
           path="/characters/:id"
           element={
             <Private>
               <CharacterDetailPage />
+            </Private>
+          }
+        />
+        <Route
+          path="/characters/create"
+          element={
+            <Private>
+              <CreateCharacterPage />
             </Private>
           }
         />

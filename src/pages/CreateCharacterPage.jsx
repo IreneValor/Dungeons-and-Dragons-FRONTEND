@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import charactersService from "../services/characters.service";
 
-export default function CreateCharacter({ getCharacters }) {
+export default function CreateCharacterPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -16,9 +18,18 @@ export default function CreateCharacter({ getCharacters }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await charactersService.create(data);
-      getCharacters();
+      const userId = "64a1746dcbb8b17db6119021"; //irenevalor@gmail.com 12Ir 64a1746dcbb8b17db6119021// // Aquí debes reemplazar "YOUR_USER_ID" con el ID de usuario correcto
+      const newData = {
+        ...data,
+        user: userId,
+        contraptions: data.contraptions || [],
+        "spellbook.spells": data.spells || [],
+        image: "../img/profile.jpeg",
+      };
+
+      await charactersService.create(newData);
       setLoading(false);
+      navigate("/", { state: { message: "Personaje creado correctamente" } });
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -39,24 +50,6 @@ export default function CreateCharacter({ getCharacters }) {
           />
         </div>
         <div>
-          <label htmlFor="race">Race</label>
-          <input
-            type="text"
-            name="race"
-            value={data.race}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="class">Class</label>
-          <input
-            type="text"
-            name="class"
-            value={data.class}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
           <label htmlFor="level">Level</label>
           <input
             type="number"
@@ -66,20 +59,29 @@ export default function CreateCharacter({ getCharacters }) {
           />
         </div>
         <div>
-          <label htmlFor="background">Background</label>
+          <label htmlFor="classs">Class</label>
           <input
             type="text"
-            name="background"
-            value={data.background}
+            name="classs"
+            value={data.classs}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label htmlFor="alignment">Alignment</label>
+          <label htmlFor="contraptions">Contraptions</label>
           <input
             type="text"
-            name="alignment"
-            value={data.alignment}
+            name="contraptions"
+            value={data.contraptions}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="spells">Spells</label>
+          <input
+            type="text"
+            name="spells"
+            value={data.spells}
             onChange={handleChange}
           />
         </div>

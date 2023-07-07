@@ -1,8 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Character from "../components/Character";
 import CreateCharacter from "../components/CreateCharacter";
+
 import { TOKEN_NAME } from "../context/auth.context";
+import charactersService from "../services/characters.service";
 
 function CharactersPage() {
   const [characters, setCharacters] = useState(null);
@@ -15,9 +16,11 @@ function CharactersPage() {
   const getCharacters = async () => {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
-      const res = await axios.get("http://localhost:5005/api/characters", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      if (!token) {
+        console.log("Token no encontrado");
+        return;
+      }
+      const res = await charactersService.getAll();
       setCharacters(res.data);
     } catch (error) {
       console.log(error);
@@ -27,9 +30,11 @@ function CharactersPage() {
   const deleteCharacter = async (id) => {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
-      await axios.delete(`http://localhost:5005/api/characters/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      if (!token) {
+        console.log("Token no encontrado");
+        return;
+      }
+      await charactersService.delete(id);
       getCharacters();
     } catch (error) {
       console.log(error);
@@ -77,7 +82,7 @@ function CharactersPage() {
             <div style={{ textAlign: "center" }}>
               <p>No hay personajes</p>
             </div>
-          ) : characters && characters.length ? (
+          ) : characters.length ? (
             <div>{renderCharacters()}</div>
           ) : (
             <p>No hay datos</p>
@@ -89,5 +94,3 @@ function CharactersPage() {
 }
 
 export default CharactersPage;
-
-

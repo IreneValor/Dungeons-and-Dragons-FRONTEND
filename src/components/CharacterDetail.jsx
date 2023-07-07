@@ -3,7 +3,6 @@ import { TOKEN_NAME } from "../context/auth.context";
 import axios from "axios";
 import charactersService from "../services/characters.service";
 
-
 export default function Character({
   _id,
   name,
@@ -12,7 +11,6 @@ export default function Character({
   level,
   background,
   alignment,
-
 }) {
   const [abilityScores, setAbilityScores] = useState({
     strength: {

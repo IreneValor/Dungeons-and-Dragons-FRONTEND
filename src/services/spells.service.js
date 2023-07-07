@@ -29,7 +29,7 @@ class SpellsService {
 
   getOne(id) {
     //FUNCION PARA DISTINGUIR ENTRE SPELL USUARIO O API
-
+    // return this.api.get(`/contraptions/${id}`);
     if (id.includes("/api/spells/")) {
       return axios.get(id);
     } else {
