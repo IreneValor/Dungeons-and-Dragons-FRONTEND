@@ -12,6 +12,7 @@ export default function Character({
   background,
   alignment,
 }) {
+  const [isEditing, setIsEditing] = useState(false);
   const [abilityScores, setAbilityScores] = useState({
     strength: {
       totalScore: 10,
@@ -99,6 +100,28 @@ export default function Character({
       console.log(error);
     }
   };
+
+  const toggleEditMode = () => {
+    setIsEditing((prevIsEditing) => !prevIsEditing);
+  };
+
+  const saveChanges = () => {
+    // Aquí puedes realizar la lógica para guardar los cambios en el estado o enviarlos al servidor
+    toggleEditMode();
+  };
+
+  const increaseAbilityScore = (ability, field) => {
+    handleAbilityChange(ability, field, abilityScores[ability][field] + 1);
+  };
+
+  const decreaseAbilityScore = (ability, field) => {
+    handleAbilityChange(ability, field, abilityScores[ability][field] - 1);
+  };
+
+  const startEditing = () => {
+    setIsEditing(true);
+  };
+
   return (
     <div>
       <h1>Name: {name}</h1>
@@ -108,199 +131,62 @@ export default function Character({
       <p>Background: {background}</p>
       <p>Alignment: {alignment}</p>
       <h3>Ability Scores</h3>
-      <div>
-        <h4>Strength</h4>
-        <p>Total Score: {abilityScores.strength.totalScore}</p>
-        <p>Modifier: {abilityScores.strength.modifier}</p>
-        <p>Base Score: {abilityScores.strength.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.strength.racialBonus}</p>
-        <p>
-          Ability Improvements: {abilityScores.strength.abilityImprovements}
-        </p>
-        <p>Misc Bonus: {abilityScores.strength.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.strength.setScore}
-          onChange={(e) =>
-            handleAbilityChange(
-              "strength",
-              "setScore",
-              parseInt(e.target.value)
-            )
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.strength.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "strength",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-      <h3>Ability Scores</h3>
-      <div>
-        <h4>Strength</h4>
-        <p>Total Score: {abilityScores.strength.totalScore}</p>
-        <p>Modifier: {abilityScores.strength.modifier}</p>
-        <p>Base Score: {abilityScores.strength.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.strength.racialBonus}</p>
-        <p>
-          Ability Improvements: {abilityScores.strength.abilityImprovements}
-        </p>
-        <p>Misc Bonus: {abilityScores.strength.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.strength.setScore}
-          onChange={(e) =>
-            handleAbilityChange(
-              "strength",
-              "setScore",
-              parseInt(e.target.value)
-            )
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.strength.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "strength",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <h4>Constitution</h4>
-        <p>Total Score: {abilityScores.constitution.totalScore}</p>
-        <p>Modifier: {abilityScores.constitution.modifier}</p>
-        <p>Base Score: {abilityScores.constitution.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.constitution.racialBonus}</p>
-        <p>
-          Ability Improvements: {abilityScores.constitution.abilityImprovements}
-        </p>
-        <p>Misc Bonus: {abilityScores.constitution.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.constitution.setScore}
-          onChange={(e) =>
-            handleAbilityChange(
-              "constitution",
-              "setScore",
-              parseInt(e.target.value)
-            )
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.constitution.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "constitution",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <h4>Intelligence</h4>
-        <p>Total Score: {abilityScores.intelligence.totalScore}</p>
-        <p>Modifier: {abilityScores.intelligence.modifier}</p>
-        <p>Base Score: {abilityScores.intelligence.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.intelligence.racialBonus}</p>
-        <p>
-          Ability Improvements: {abilityScores.intelligence.abilityImprovements}
-        </p>
-        <p>Misc Bonus: {abilityScores.intelligence.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.intelligence.setScore}
-          onChange={(e) =>
-            handleAbilityChange(
-              "intelligence",
-              "setScore",
-              parseInt(e.target.value)
-            )
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.intelligence.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "intelligence",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <h4>Wisdom</h4>
-        <p>Total Score: {abilityScores.wisdom.totalScore}</p>
-        <p>Modifier: {abilityScores.wisdom.modifier}</p>
-        <p>Base Score: {abilityScores.wisdom.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.wisdom.racialBonus}</p>
-        <p>Ability Improvements: {abilityScores.wisdom.abilityImprovements}</p>
-        <p>Misc Bonus: {abilityScores.wisdom.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.wisdom.setScore}
-          onChange={(e) =>
-            handleAbilityChange("wisdom", "setScore", parseInt(e.target.value))
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.wisdom.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "wisdom",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
-      <div>
-        <h4>Charisma</h4>
-        <p>Total Score: {abilityScores.charisma.totalScore}</p>
-        <p>Modifier: {abilityScores.charisma.modifier}</p>
-        <p>Base Score: {abilityScores.charisma.baseScore}</p>
-        <p>Racial Bonus: {abilityScores.charisma.racialBonus}</p>
-        <p>
-          Ability Improvements: {abilityScores.charisma.abilityImprovements}
-        </p>
-        <p>Misc Bonus: {abilityScores.charisma.miscBonus}</p>
-        <input
-          type="number"
-          value={abilityScores.charisma.setScore}
-          onChange={(e) =>
-            handleAbilityChange(
-              "charisma",
-              "setScore",
-              parseInt(e.target.value)
-            )
-          }
-        />
-        <input
-          type="number"
-          value={abilityScores.charisma.otherModifier}
-          onChange={(e) =>
-            handleAbilityChange(
-              "charisma",
-              "otherModifier",
-              parseInt(e.target.value)
-            )
-          }
-        />
-      </div>
+      {isEditing ? (
+        <div>
+          {Object.entries(abilityScores).map(([ability, scores]) => (
+            <div key={ability}>
+              <h4>{ability.charAt(0).toUpperCase() + ability.slice(1)}</h4>
+              {Object.entries(scores).map(([field, value]) => (
+                <div key={field}>
+                  <p>{field.charAt(0).toUpperCase() + field.slice(1)}:</p>
+                  <div>
+                    <button
+                      onClick={() => decreaseAbilityScore(ability, field)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={value}
+                      onChange={(e) =>
+                        handleAbilityChange(
+                          ability,
+                          field,
+                          parseInt(e.target.value)
+                        )
+                      }
+                    />
+                    <button
+                      onClick={() => increaseAbilityScore(ability, field)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+          <button onClick={saveChanges}>Save</button>
+          <button onClick={toggleEditMode}>Cancel</button>
+        </div>
+      ) : (
+        <div>
+          {Object.entries(abilityScores).map(([ability, scores]) => (
+            <div key={ability}>
+              <h4 onClick={() => startEditing()}>
+                {ability.charAt(0).toUpperCase() + ability.slice(1)}
+              </h4>
+              {Object.entries(scores).map(([field, value]) => (
+                <p key={field} onClick={() => startEditing()}>
+                  {field.charAt(0).toUpperCase() + field.slice(1)}: {value}
+                </p>
+              ))}
+            </div>
+          ))}
+          <button onClick={toggleEditMode}>Edit</button>
+          <button onClick={() => deleteCharacter(_id)}>Delete</button>
+        </div>
+      )}
     </div>
   );
 }
