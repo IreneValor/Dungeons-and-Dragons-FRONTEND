@@ -6,7 +6,7 @@ export default function Character({
   _id,
   name,
   race,
-  class: characterClass,
+  classs: characterClass,
   level,
   background,
   alignment,
@@ -39,7 +39,7 @@ export default function Character({
         <img src={image || defaultImage} alt={name} />
       </Link>
       <p>Race: {race}</p>
-      <p>Class: {characterClass}</p>
+      <p>Classs: {characterClass}</p>
       <p>Level: {level}</p>
       <p>Background: {background}</p>
       <p>Alignment: {alignment}</p>

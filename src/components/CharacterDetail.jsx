@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { TOKEN_NAME } from "../context/auth.context";
-import axios from "axios";
-import charactersService from "../services/characters.service";
+import { Tab, Nav } from "react-bootstrap";
 
 export default function Character({
   _id,
@@ -13,6 +11,7 @@ export default function Character({
   alignment,
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
   const [abilityScores, setAbilityScores] = useState({
     strength: {
       totalScore: 10,
@@ -92,12 +91,25 @@ export default function Character({
     }));
   };
 
-  const deleteCharacter = async (id) => {
-    try {
-      await charactersService.delete(id);
-      getCharacters(); // Actualiza la lista de personajes después de borrar uno
-    } catch (error) {
-      console.log(error);
+  const handleInputChange = (field, value) => {
+    switch (field) {
+      case "race":
+        setRace(value);
+        break;
+      case "class":
+        setClass(value);
+        break;
+      case "level":
+        setLevel(value);
+        break;
+      case "background":
+        setBackground(value);
+        break;
+      case "alignment":
+        setAlignment(value);
+        break;
+      default:
+        break;
     }
   };
 
@@ -106,7 +118,7 @@ export default function Character({
   };
 
   const saveChanges = () => {
-    // Aquí puedes realizar la lógica para guardar los cambios en el estado o enviarlos al servidor
+    // Lógica para guardar los cambios
     toggleEditMode();
   };
 
@@ -122,69 +134,95 @@ export default function Character({
     setIsEditing(true);
   };
 
+  const handleTabSelect = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const renderAbilityDetails = (ability) => {
+    const scores = abilityScores[ability];
+    return (
+      <div>
+        {Object.entries(scores).map(([field, value]) => (
+          <div key={field}>
+            <p>
+              {field.charAt(0).toUpperCase() + field.slice(1)}: {value}
+            </p>
+            {isEditing && (
+              <div>
+                <button onClick={() => decreaseAbilityScore(ability, field)}>
+                  -
+                </button>
+                <input
+                  type="number"
+                  value={value}
+                  onChange={(e) =>
+                    handleAbilityChange(
+                      ability,
+                      field,
+                      parseInt(e.target.value)
+                    )
+                  }
+                />
+                <button onClick={() => increaseAbilityScore(ability, field)}>
+                  +
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div>
       <h1>Name: {name}</h1>
-      <p>Race: {race}</p>
-      <p>Class: {characterClass}</p>
-      <p>Level: {level}</p>
-      <p>Background: {background}</p>
-      <p>Alignment: {alignment}</p>
+      <p onClick={() => startEditing("race")}>Race: {race}</p>
+      <p onClick={() => startEditing("class")}>Class: {characterClass}</p>
+      <p onClick={() => startEditing("level")}>Level: {level}</p>
+      <p onClick={() => startEditing("background")}>Background: {background}</p>
+      <p onClick={() => startEditing("alignment")}>Alignment: {alignment}</p>
       <h3>Ability Scores</h3>
+
+      <Tab.Container activeKey={activeTab} onSelect={handleTabSelect}>
+        <Nav variant="tabs">
+          <Nav.Item>
+            <Nav.Link eventKey="all">All</Nav.Link>
+          </Nav.Item>
+          {Object.entries(abilityScores).map(([ability]) => (
+            <Nav.Item key={ability}>
+              <Nav.Link eventKey={ability}>{ability}</Nav.Link>
+            </Nav.Item>
+          ))}
+        </Nav>
+
+        <Tab.Content>
+          <Tab.Pane eventKey="all">
+            {Object.entries(abilityScores).map(([ability]) => (
+              <div key={ability}>
+                <h4 onClick={startEditing}>
+                  {ability.charAt(0).toUpperCase() + ability.slice(1)}
+                </h4>
+                {renderAbilityDetails(ability)}
+              </div>
+            ))}
+          </Tab.Pane>
+          {Object.entries(abilityScores).map(([ability]) => (
+            <Tab.Pane key={ability} eventKey={ability}>
+              {renderAbilityDetails(ability)}
+            </Tab.Pane>
+          ))}
+        </Tab.Content>
+      </Tab.Container>
+
       {isEditing ? (
         <div>
-          {Object.entries(abilityScores).map(([ability, scores]) => (
-            <div key={ability}>
-              <h4>{ability.charAt(0).toUpperCase() + ability.slice(1)}</h4>
-              {Object.entries(scores).map(([field, value]) => (
-                <div key={field}>
-                  <p>{field.charAt(0).toUpperCase() + field.slice(1)}:</p>
-                  <div>
-                    <button
-                      onClick={() => decreaseAbilityScore(ability, field)}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      value={value}
-                      onChange={(e) =>
-                        handleAbilityChange(
-                          ability,
-                          field,
-                          parseInt(e.target.value)
-                        )
-                      }
-                    />
-                    <button
-                      onClick={() => increaseAbilityScore(ability, field)}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
           <button onClick={saveChanges}>Save</button>
           <button onClick={toggleEditMode}>Cancel</button>
         </div>
       ) : (
         <div>
-          {Object.entries(abilityScores).map(([ability, scores]) => (
-            <div key={ability}>
-              <h4 onClick={() => startEditing()}>
-                {ability.charAt(0).toUpperCase() + ability.slice(1)}
-              </h4>
-              {Object.entries(scores).map(([field, value]) => (
-                <p key={field} onClick={() => startEditing()}>
-                  {field.charAt(0).toUpperCase() + field.slice(1)}: {value}
-                </p>
-              ))}
-            </div>
-          ))}
           <button onClick={toggleEditMode}>Edit</button>
-          <button onClick={() => deleteCharacter(_id)}>Delete</button>
         </div>
       )}
     </div>

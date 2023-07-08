@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import EditContraptionForm from "./EditContraptionForm";
-// import contraptionService from "../services/contraptionService";
 
 export default function ContraptionDetail({
   _id,
   name,
-  type,
   description,
   quantity,
   done,
+  isFavorite,
   getContraption,
 }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,7 +27,6 @@ export default function ContraptionDetail({
   return (
     <>
       <h1>Name: {name}</h1>
-      <p>Type: {type}</p>
       <p>Description: {description}</p>
       <p>Quantity: {quantity}</p>
 
@@ -36,9 +34,10 @@ export default function ContraptionDetail({
         <EditContraptionForm
           _id={_id}
           name={name}
-          type={type}
           description={description}
+          quantity={quantity}
           done={done}
+          isFavorite={isFavorite}
           getContraption={getContraption}
           redirectToDetail={redirectToDetail}
           onClose={handleFormClose}
@@ -54,6 +53,15 @@ export default function ContraptionDetail({
               onChange={() => {}}
             />
           </label>
+          <label>
+            Is Favorite:
+            <input
+              type="checkbox"
+              checked={isFavorite}
+              disabled
+              onChange={() => {}}
+            />
+          </label>
           <button onClick={handleEditClick}>✏️</button>
         </>
       )}
@@ -62,12 +70,11 @@ export default function ContraptionDetail({
 }
 // import React, { useState } from "react";
 // import EditContraptionForm from "./EditContraptionForm";
-// import { TOKEN_NAME } from "../context/auth.context";
+// // import contraptionService from "../services/contraptionService";
 
 // export default function ContraptionDetail({
 //   _id,
 //   name,
-//   type,
 //   description,
 //   quantity,
 //   done,
@@ -90,7 +97,7 @@ export default function ContraptionDetail({
 //   return (
 //     <>
 //       <h1>Name: {name}</h1>
-//       <p>Type: {type}</p>
+
 //       <p>Description: {description}</p>
 //       <p>Quantity: {quantity}</p>
 
@@ -98,13 +105,12 @@ export default function ContraptionDetail({
 //         <EditContraptionForm
 //           _id={_id}
 //           name={name}
-//           type={type}
+
 //           description={description}
 //           done={done}
 //           getContraption={getContraption}
 //           redirectToDetail={redirectToDetail}
 //           onClose={handleFormClose}
-//           TOKEN_NAME={TOKEN_NAME}
 //         />
 //       ) : (
 //         <>

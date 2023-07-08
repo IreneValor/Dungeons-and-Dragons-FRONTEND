@@ -15,6 +15,8 @@ const SpellDetailPage = () => {
         const token = localStorage.getItem(TOKEN_NAME);
         const res = await spellsService.getOne(id);
         setSpell(res.data);
+        console.log(res.data);
+        console.log(id);
       } catch (error) {
         console.log(error);
       }
