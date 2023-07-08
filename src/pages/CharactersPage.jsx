@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Character from "../components/Character";
-import CreateCharacter from "../components/CreateCharacter";
+// import CreateCharacter from "../components/CreateCharacter";
 
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";

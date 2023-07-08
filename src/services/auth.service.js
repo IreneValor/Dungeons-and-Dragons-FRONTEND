@@ -1,5 +1,4 @@
-import axios from "axios";
-import { TOKEN_NAME } from "../context/auth.context";
+
 import apiInstance from "./apiInstance";
 class AuthService {
   constructor() {

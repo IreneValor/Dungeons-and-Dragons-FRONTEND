@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CharacterDetail from "../components/CharacterDetail";
-import CreateCharacter from "../components/CreateCharacter";
+// import CreateCharacter from "../components/CreateCharacter";
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";
 

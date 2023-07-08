@@ -11,6 +11,7 @@ import "./main.css";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  
   <AuthProviderWrapper>
     <Router>
       <App />

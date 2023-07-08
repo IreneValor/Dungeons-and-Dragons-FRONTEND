@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { TOKEN_NAME } from "../context/auth.context";
+
 import spellsService from "../services/spells.service";
 
 export default function CreateSpell({ getSpells }) {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    name: "",
+    level: 1,
+    desc: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -17,15 +21,15 @@ export default function CreateSpell({ getSpells }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      const spellData = { ...data, level: 1 }; // Agrega el campo level con un valor adecuado
-      await spellsService.create(spellData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      // const token = localStorage.getItem(TOKEN_NAME);
+      await spellsService.create(data);
       getSpells();
       setLoading(false);
+      setData({
+        name: "",
+        level: 1,
+        desc: "",
+      });
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -43,25 +47,18 @@ export default function CreateSpell({ getSpells }) {
             name="name"
             value={data.name}
             onChange={handleChange}
+            required
           />
         </div>
+
         <div>
-          <label htmlFor="type">Type</label>
-          <textarea
-            multiple
-            type="text"
-            name="type"
-            value={data.type}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="desc">Description</label>
           <input
             type="text"
-            name="description"
-            value={data.description}
+            name="desc"
+            value={data.desc}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -71,6 +68,7 @@ export default function CreateSpell({ getSpells }) {
             name="level"
             value={data.level}
             onChange={handleChange}
+            required
           />
         </div>
         <div>

@@ -1,5 +1,3 @@
-import axios from "axios";
-import { TOKEN_NAME } from "../context/auth.context";
 import apiInstance from "./apiInstance";
 
 class SpellsService {
@@ -30,11 +28,11 @@ class SpellsService {
   getOne(id) {
     //FUNCION PARA DISTINGUIR ENTRE SPELL USUARIO O API
     // return this.api.get(`/contraptions/${id}`);
-    if (id.includes("/api/spells/")) {
-      return axios.get(id);
-    } else {
-      return this.api.get(`/spells/${id}`);
-    }
+    // if (id.includes("/api/spells/")) {
+    //   return axios.get(id);
+    // } else {
+    //   return this.api.get(`/spells/${id}`);
+    // }
   }
 }
 
