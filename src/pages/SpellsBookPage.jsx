@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spell from "../components/Spell";
 import CreateSpell from "../components/CreateSpell";
 import spellsService from "../services/spells.service";
-import { TOKEN_NAME } from "../context/auth.context";
+
 
 function SpellsBookPage() {
   const [spells, setSpells] = useState(null);
@@ -23,12 +23,8 @@ function SpellsBookPage() {
 
   const deleteSpell = async (id) => {
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      await spellsService.delete(id, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      await spellsService.delete(id);
       getSpells();
     } catch (error) {
       console.log(error);
@@ -55,12 +51,7 @@ function SpellsBookPage() {
 
   const handleCreateSpell = async (spellData) => {
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      await spellsService.create(spellData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await spellsService.create(spellData);
       getSpells();
     } catch (error) {
       console.log(error);

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CharacterDetail from "../components/CharacterDetail";
-// import CreateCharacter from "../components/CreateCharacter";
-import { TOKEN_NAME } from "../context/auth.context";
+
 import charactersService from "../services/characters.service";
 
 function CharactersPage() {
@@ -16,12 +15,8 @@ function CharactersPage() {
 
   const getCharacter = async () => {
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      const res = await charactersService.getOne(id, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      const res = await charactersService.getOne(id);
       setCharacter(res.data);
     } catch (error) {
       console.log(error);

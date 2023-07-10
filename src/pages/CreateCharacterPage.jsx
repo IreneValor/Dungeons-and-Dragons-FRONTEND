@@ -17,41 +17,49 @@ export default function CreateCharacterPage() {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    setData({
-      ...data,
+    setData((prevData) => ({
+      ...prevData,
       image: file,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const token = localStorage.getItem(TOKEN_NAME);
       const userId = "64a1746dcbb8b17db6119021"; // Reemplazar con el ID de usuario correcto (puede ser una variable)
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("race", data.race);
-      formData.append("classs", data.classs);
-      formData.append("level", data.level);
-      formData.append("background", data.background);
-      formData.append("alignment", data.alignment);
-      formData.append("image", data.image);
-      formData.append("user", userId);
 
-      await charactersService.create(formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setLoading(false);
+      const characterData = {
+        name: data.name,
+        race: data.race,
+        classs: data.class,
+        level: data.level,
+        background: data.background,
+        alignment: data.alignment,
+        image: data.image ? data.image.name : null,
+        user: userId,
+      };
+      console.log(characterData);
+      await charactersService.create(characterData);
+      console.log(setData);
+
+      if (data.image) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", data.image);
+        await charactersService.uploadImage(characterData.name, imageFormData);
+      }
+
       navigate("/", { state: { message: "Personaje creado correctamente" } });
     } catch (error) {
       console.log(error);
@@ -82,11 +90,11 @@ export default function CreateCharacterPage() {
           />
         </div>
         <div>
-          <label htmlFor="classs">Class</label>
+          <label htmlFor="class">Class</label>
           <input
             type="text"
-            name="classs"
-            value={data.classs}
+            name="class"
+            value={data.class}
             onChange={handleChange}
           />
         </div>

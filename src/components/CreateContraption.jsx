@@ -17,13 +17,12 @@ export default function CreateContraption({ getContraptions }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      await contraptionService.create(data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  
+      await contraptionService.create(data);
+      console.log("datos correctos contraptions")
+               console.log("data");
       getContraptions();
+         console.log("data");
       setLoading(false);
     } catch (error) {
       console.log(error);

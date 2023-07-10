@@ -8,10 +8,6 @@ import charactersService from "../services/characters.service";
 export const HomePage = () => {
   const [characters, setCharacters] = useState([]);
 
-  useEffect(() => {
-    getCharacters();
-  }, []);
-
   const getCharacters = async () => {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
@@ -20,11 +16,16 @@ export const HomePage = () => {
         return;
       }
       const res = await charactersService.getAll();
+      console.log(res.data); // Aquí se muestra la respuesta del servicio
       setCharacters(res.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getCharacters();
+  }, []);
 
   const deleteCharacter = async (id) => {
     try {
@@ -51,6 +52,8 @@ export const HomePage = () => {
       />
     ));
   };
+
+  console.log(characters); // Aquí se muestra el estado actual de los personajes
 
   return (
     <div>

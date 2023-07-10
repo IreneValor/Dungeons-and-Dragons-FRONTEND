@@ -1,17 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-import { TOKEN_NAME } from "../context/auth.context";
 import spellsService from "../services/spells.service";
 export default function Spell({ _id, name, type, description, deleteSpell }) {
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      await spellsService.delete(id, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      await spellsService.delete(id);
       deleteSpell(id);
     } catch (error) {
       console.log(error);
