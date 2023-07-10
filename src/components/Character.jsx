@@ -51,7 +51,8 @@ export default function Character({
     </div>
   );
 }
-// import React from "react";
+//CON CHARACTERCARD CADA UNO
+// import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 // import charactersService from "../services/characters.service";
 
@@ -59,19 +60,26 @@ export default function Character({
 //   _id,
 //   name,
 //   race,
-//   class: characterClass,
+//   classs: characterClass,
 //   level,
 //   background,
 //   alignment,
 //   image,
 //   getCharacters,
-//   handleClick, // Nueva función de devolución de llamada
+//   handleCharacterClick,
 // }) {
 //   const defaultImage =
 //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQztsPd6Bijg8DIkFZW_nMaofbIRq_Pm0GR3w&usqp=CAU";
 
+//   const [clickedCharacterId, setClickedCharacterId] = useState(null);
+
 //   const deleteCharacter = async (id) => {
 //     try {
+//       const token = localStorage.getItem(TOKEN_NAME);
+//       if (!token) {
+//         console.log("Token no encontrado");
+//         return;
+//       }
 //       await charactersService.delete(id);
 //       getCharacters();
 //     } catch (error) {
@@ -79,21 +87,26 @@ export default function Character({
 //     }
 //   };
 
+//   const handleImageClick = (id) => {
+//     setClickedCharacterId(id);
+//   };
+
 //   return (
 //     <div>
-//       <h1>Name: {name}</h1>
 //       <img
 //         src={image || defaultImage}
 //         alt={name}
-//         onClick={() => handleClick(_id)}
-//       />{" "}
-//       {/* Agrega el evento onClick en la imagen */}
+//         onClick={() => handleImageClick(_id)}
+//       />
 //       <p>Race: {race}</p>
-//       <p>Class: {characterClass}</p>
+//       <p>Classs: {characterClass}</p>
 //       <p>Level: {level}</p>
 //       <p>Background: {background}</p>
 //       <p>Alignment: {alignment}</p>
+
 //       <button onClick={() => deleteCharacter(_id)}>🗑</button>
+//       <Link to={`/characters/${clickedCharacterId}`}>Character card</Link>
 //     </div>
 //   );
 // }
+//-------ANTES DE LOS INTENTOS//

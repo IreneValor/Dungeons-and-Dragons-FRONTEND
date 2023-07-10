@@ -39,7 +39,7 @@ export default function CreateCharacterPage() {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("race", data.race);
-      formData.append("class", data.class);
+      formData.append("classs", data.classs);
       formData.append("level", data.level);
       formData.append("background", data.background);
       formData.append("alignment", data.alignment);
@@ -82,11 +82,11 @@ export default function CreateCharacterPage() {
           />
         </div>
         <div>
-          <label htmlFor="class">Class</label>
+          <label htmlFor="classs">Class</label>
           <input
             type="text"
-            name="class"
-            value={data.class}
+            name="classs"
+            value={data.classs}
             onChange={handleChange}
           />
         </div>

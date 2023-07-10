@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import contraptionService from "../services/contraption.service";
 
+
 export default function Contraption({
   _id,
   name,
@@ -31,7 +32,6 @@ export default function Contraption({
     </div>
   );
 }
-//--------//
 // import { Link } from "react-router-dom";
 // import { TOKEN_NAME } from "../context/auth.context";
 

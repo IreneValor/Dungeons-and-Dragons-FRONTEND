@@ -6,6 +6,7 @@ import contraptionService from "../services/contraption.service";
 function ContraptionsPage() {
   const [contraptions, setContraptions] = useState(null);
   const [showCreateContraption, setShowCreateContraption] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     getContraptions();
@@ -15,6 +16,7 @@ function ContraptionsPage() {
     try {
       const res = await contraptionService.getAll();
       setContraptions(res.data);
+
     } catch (error) {
       console.log(error);
     }
@@ -29,9 +31,30 @@ function ContraptionsPage() {
     }
   };
 
+  const handleAddContraption = () => {
+    setShowCreateContraption(true);
+  };
+
+  const handleCancelAddContraption = () => {
+    setShowCreateContraption(false);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
   const renderContraptions = () => {
-    if (contraptions && contraptions.length > 0) {
-      return contraptions.map((contraption) => (
+    let filteredContraptions = contraptions;
+
+    if (searchValue) {
+      const searchQuery = searchValue.toLowerCase();
+      filteredContraptions = contraptions.filter((contraption) =>
+        contraption.name.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    if (filteredContraptions && filteredContraptions.length > 0) {
+      return filteredContraptions.map((contraption) => (
         <Contraption
           deleteContraption={deleteContraption}
           key={contraption._id || contraption.index}
@@ -41,14 +64,6 @@ function ContraptionsPage() {
     } else {
       return <p>No hay datos</p>;
     }
-  };
-
-  const handleAddContraption = () => {
-    setShowCreateContraption(true);
-  };
-
-  const handleCancelAddContraption = () => {
-    setShowCreateContraption(false);
   };
 
   return (
@@ -70,6 +85,15 @@ function ContraptionsPage() {
         )}
 
         <div>
+          <input
+            type="text"
+            value={searchValue}
+            onChange={handleSearchChange}
+            placeholder="Buscar contraptions por nombre..."
+          />
+        </div>
+
+        <div>
           {!contraptions ? (
             <div style={{ textAlign: "center" }}>
               <p>Cargando...</p>
@@ -84,6 +108,7 @@ function ContraptionsPage() {
 }
 
 export default ContraptionsPage;
+
 // import axios from "axios";
 // import { useEffect, useState } from "react";
 // import Contraption from "../components/Contraption";

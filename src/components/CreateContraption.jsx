@@ -45,6 +45,16 @@ export default function CreateContraption({ getContraptions }) {
           />
         </div>
         <div>
+          <label htmlFor="type">Tipo</label>
+          <textarea
+            multiple
+            type="text"
+            name="type"
+            value={data.type}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+        <div>
           <label htmlFor="description">Descripción</label>
           <input
             type="text"
