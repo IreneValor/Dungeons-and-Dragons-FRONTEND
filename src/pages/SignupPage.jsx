@@ -59,10 +59,13 @@ const SignupPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username</label>
+      <div class="mb-3">
+        <label for="username" class="form-label">
+          Username
+        </label>
         <input
           type="text"
+          class="form-control"
           id="username"
           value={username}
           onChange={handleInputChange}
@@ -70,10 +73,13 @@ const SignupPage = () => {
         />
       </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
+      <div class="mb-3">
+        <label for="password" class="form-label">
+          Password
+        </label>
         <input
           type="password"
+          class="form-control"
           id="password"
           value={password}
           onChange={handleInputChange}
@@ -81,10 +87,13 @@ const SignupPage = () => {
         />
       </div>
 
-      <div>
-        <label htmlFor="email">Email</label>
+      <div class="mb-3">
+        <label for="email" class="form-label">
+          Email
+        </label>
         <input
           type="email"
+          class="form-control"
           id="email"
           value={email}
           onChange={handleInputChange}
@@ -92,9 +101,13 @@ const SignupPage = () => {
         />
       </div>
 
-      <div>
-        <button type="submit">Create user</button>
-        <Link to="/login">Login</Link>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">
+          Create user
+        </button>
+        <Link to="/login" class="btn btn-link">
+          Login
+        </Link>
       </div>
     </form>
   );

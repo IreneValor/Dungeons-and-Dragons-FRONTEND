@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import charactersService from "../services/characters.service";
+import { TOKEN_NAME } from "../context/auth.context";
 
 export default function Character({
   _id,
@@ -32,7 +33,7 @@ export default function Character({
 
   return (
     <div>
-      <h1>Name: {name}</h1>
+      <h1>{name}</h1>
       <Link to={`/characters/${_id}`}>
         {" "}
         {/* Envuelve el enlace con la etiqueta Link */}

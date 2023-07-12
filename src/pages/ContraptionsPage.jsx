@@ -16,7 +16,6 @@ function ContraptionsPage() {
     try {
       const res = await contraptionService.getAll();
       setContraptions(res.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -54,53 +53,70 @@ function ContraptionsPage() {
     }
 
     if (filteredContraptions && filteredContraptions.length > 0) {
-      return filteredContraptions.map((contraption) => (
-        <Contraption
-          deleteContraption={deleteContraption}
-          key={contraption._id || contraption.index}
-          {...contraption}
-        />
-      ));
+      return filteredContraptions.map((contraption) => {
+        console.log("contraption", contraption);
+        return (
+          <Contraption
+            deleteContraption={deleteContraption}
+            key={contraption._id || contraption.index}
+            {...contraption}
+          />
+        );
+      });
     } else {
       return <p>No hay datos</p>;
     }
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <div>
-        {!showCreateContraption && contraptions && (
-          <div style={{ textAlign: "right" }}>
-            <button onClick={handleAddContraption}>Añadir artilugio</button>
-          </div>
-        )}
+    <div class="d-flex justify-content-center">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            {!showCreateContraption && contraptions && (
+              <div class="text-right">
+                <button class="btn btn-primary" onClick={handleAddContraption}>
+                  Añadir artilugio
+                </button>
+              </div>
+            )}
 
-        {showCreateContraption && (
-          <div>
-            <CreateContraption
-              getContraptions={getContraptions}
-              onCancel={handleCancelAddContraption}
-            />
-          </div>
-        )}
+            {showCreateContraption && (
+              <div>
+                <CreateContraption
+                  getContraptions={getContraptions}
+                  onCancel={handleCancelAddContraption}
+                />
+              </div>
+            )}
 
-        <div>
-          <input
-            type="text"
-            value={searchValue}
-            onChange={handleSearchChange}
-            placeholder="Buscar contraptions por nombre..."
-          />
-        </div>
-
-        <div>
-          {!contraptions ? (
-            <div style={{ textAlign: "center" }}>
-              <p>Cargando...</p>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                value={searchValue}
+                onChange={handleSearchChange}
+                placeholder="Buscar contraptions por nombre..."
+              />
             </div>
-          ) : (
-            <div>{renderContraptions()}</div>
-          )}
+
+            <div class="row">
+              {!contraptions ? (
+                <div class="text-center">
+                  <p>Cargando...</p>
+                </div>
+              ) : (
+                renderContraptions().map((contraption, index) => (
+                  <div
+                    class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
+                    key={index}
+                  >
+                    {contraption}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

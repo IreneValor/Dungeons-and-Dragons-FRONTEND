@@ -43,7 +43,7 @@ export default function CreateCharacterPage() {
       const characterData = {
         name: data.name,
         race: data.race,
-        classs: data.class,
+        class: data.class,
         level: data.level,
         background: data.background,
         alignment: data.alignment,
@@ -69,66 +69,94 @@ export default function CreateCharacterPage() {
 
   return (
     <div>
-      <h2>Create Character</h2>
+      <h2 class="mb-4">Create Character</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
+        <div class="mb-3">
+          <label for="name" class="form-label">
+            Name
+          </label>
           <input
             type="text"
+            class="form-control"
+            id="name"
             name="name"
             value={data.name}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="race">Race</label>
+        <div class="mb-3">
+          <label for="race" class="form-label">
+            Race
+          </label>
           <input
             type="text"
+            class="form-control"
+            id="race"
             name="race"
             value={data.race}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="class">Class</label>
+        <div class="mb-3">
+          <label for="class" class="form-label">
+            Class
+          </label>
           <input
             type="text"
+            class="form-control"
+            id="class"
             name="class"
             value={data.class}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="level">Level</label>
+        <div class="mb-3">
+          <label for="level" class="form-label">
+            Level
+          </label>
           <input
             type="number"
+            class="form-control"
+            id="level"
             name="level"
             value={data.level}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="background">Background</label>
+        <div class="mb-3">
+          <label for="background" class="form-label">
+            Background
+          </label>
           <input
             type="text"
+            class="form-control"
+            id="background"
             name="background"
             value={data.background}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="alignment">Alignment</label>
+        <div class="mb-3">
+          <label for="alignment" class="form-label">
+            Alignment
+          </label>
           <input
             type="text"
+            class="form-control"
+            id="alignment"
             name="alignment"
             value={data.alignment}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="image">Image</label>
+        <div class="mb-3">
+          <label for="image" class="form-label">
+            Image
+          </label>
           <input
             type="file"
+            class="form-control"
+            id="image"
             name="image"
             accept="image/*"
             onChange={handleImageUpload}
@@ -139,12 +167,15 @@ export default function CreateCharacterPage() {
             <img
               src={URL.createObjectURL(data.image)}
               alt="Character Image"
-              style={{ width: "150px", height: "150px" }}
+              class="img-fluid"
+              style="width: 150px; height: 150px;"
             />
           </div>
         )}
-        <div>
-          <button type="submit">Save</button>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">
+            Save
+          </button>
         </div>
       </form>
     </div>

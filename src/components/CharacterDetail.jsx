@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import { Tab, Nav } from "react-bootstrap";
 
-export default function Character({
+export default function CharacterDetail({
   _id,
   name,
   race,

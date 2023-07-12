@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import SpellDetail from "../components/SpellDetail";
-import { TOKEN_NAME } from "../context/auth.context";
+
 import spellsService from "../services/spells.service";
 
 const SpellDetailPage = () => {
@@ -12,9 +12,10 @@ const SpellDetailPage = () => {
   useEffect(() => {
     const getSpell = async () => {
       try {
-        const token = localStorage.getItem(TOKEN_NAME);
         const res = await spellsService.getOne(id);
+        console.log(res);
         setSpell(res.data);
+
         console.log(res.data);
         console.log(id);
       } catch (error) {
@@ -27,8 +28,14 @@ const SpellDetailPage = () => {
 
   return (
     <div>
-      <h1>Spell Detail</h1>
-      {spell ? <SpellDetail spell={spell} /> : <p>No data available</p>}
+      <h1 class="mb-4">Spell Detail</h1>
+      {spell ? (
+        <div class="card">
+          <SpellDetail spell={spell} />
+        </div>
+      ) : (
+        <p>No data available</p>
+      )}
     </div>
   );
 };

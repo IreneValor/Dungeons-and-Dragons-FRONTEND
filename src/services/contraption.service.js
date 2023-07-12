@@ -24,6 +24,10 @@ class ContraptionService {
   getOne(id) {
     return this.api.get(`/contraptions/${id}`);
   }
+  getByIndex(id) {
+    // return this.api.get(`/contraptions/${id}`);
+    return this.api.get(`https://www.dnd5eapi.co/api/equipment/${id}`);
+  }
 }
 
 const contraptionService = new ContraptionService();

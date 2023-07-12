@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import contraptionService from "../services/contraption.service";
 
-
 export default function Contraption({
   _id,
+  index,
   name,
-  type,
-  description,
-  quantity,
-  done,
-  getContraptions,
+  // type,
+  // description,
+  // quantity,
+  // done,
+  // getContraptions,
   deleteContraption,
 }) {
   const handleDelete = async () => {
@@ -26,37 +26,9 @@ export default function Contraption({
       <h1>Name: {name}</h1>
 
       <button onClick={handleDelete}>🗑</button>
-      <Link to={`/contraptions/${_id}`}>
+      <Link to={`/contraptions/${_id || index}?origin`}>
         <button>ver detalles</button>
       </Link>
     </div>
   );
 }
-// import { Link } from "react-router-dom";
-// import { TOKEN_NAME } from "../context/auth.context";
-
-// export default function Contraption({
-//   _id,
-//   name,
-//   type,
-//   description,
-//   quantity,
-//   done,
-//   getContraptions,
-//   deleteContraption,
-// }) {
-//   const handleDelete = () => {
-//     deleteContraption(_id);
-//   };
-
-//   return (
-//     <div>
-//       <h1>Name: {name}</h1>
-
-//       <button onClick={handleDelete}>🗑</button>
-//       <Link to={`/contraptions/${_id}`}>
-//         <button>ver detalles</button>
-//       </Link>
-//     </div>
-//   );
-// }

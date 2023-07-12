@@ -12,9 +12,7 @@ import ContraptionsPage from "./pages/ContraptionsPage";
 import SpellDetailPage from "./pages/SpellDetailPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
 import "bootstrap/dist/css/bootstrap.css";
-// import CreateCharacter from "./components/CreateCharacter";
 import CreateCharacterPage from "./pages/CreateCharacterPage";
-// import CreateCharacterPage from "./pages/CreateCharacterPage";
 
 function App() {
   return (

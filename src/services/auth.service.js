@@ -1,7 +1,8 @@
-
 import apiInstance from "./apiInstance";
+console.log(apiInstance);
 class AuthService {
   constructor() {
+    console.log(apiInstance);
     this.api = apiInstance;
   }
 

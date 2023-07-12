@@ -7,8 +7,13 @@ export default function ContraptionDetail({
   description,
   quantity,
   done,
-  isFavorite,
   getContraption,
+  equipment_category,
+  gear_category,
+  cost,
+  weight,
+  contents,
+  properties,
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -24,20 +29,35 @@ export default function ContraptionDetail({
     setIsEditing(false);
   };
 
+  const renderProperty = (label, value) => {
+    if (value) {
+      return (
+        <p>
+          {label}: {value}
+        </p>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       <h1>Name: {name}</h1>
-      <p>Description: {description}</p>
-      <p>Quantity: {quantity}</p>
+
+      {renderProperty("Description", description)}
+      {renderProperty("Quantity", quantity)}
+
+      {renderProperty("Equipment Category", equipment_category?.name)}
+      {renderProperty("Gear Category", gear_category?.name)}
+      {renderProperty("Cost", cost?.quantity + " " + cost?.unit)}
+      {renderProperty("Weight", weight)}
 
       {isEditing ? (
         <EditContraptionForm
           _id={_id}
           name={name}
           description={description}
-          quantity={quantity}
           done={done}
-          isFavorite={isFavorite}
           getContraption={getContraption}
           redirectToDetail={redirectToDetail}
           onClose={handleFormClose}
@@ -53,21 +73,13 @@ export default function ContraptionDetail({
               onChange={() => {}}
             />
           </label>
-          <label>
-            Is Favorite:
-            <input
-              type="checkbox"
-              checked={isFavorite}
-              disabled
-              onChange={() => {}}
-            />
-          </label>
           <button onClick={handleEditClick}>✏️</button>
         </>
       )}
     </>
   );
 }
+
 // import React, { useState } from "react";
 // import EditContraptionForm from "./EditContraptionForm";
 // // import contraptionService from "../services/contraptionService";
@@ -78,6 +90,7 @@ export default function ContraptionDetail({
 //   description,
 //   quantity,
 //   done,
+//   weight,
 //   getContraption,
 // }) {
 //   const [isEditing, setIsEditing] = useState(false);
@@ -100,12 +113,12 @@ export default function ContraptionDetail({
 
 //       <p>Description: {description}</p>
 //       <p>Quantity: {quantity}</p>
+//       <p>weight:{weight}</p>
 
 //       {isEditing ? (
 //         <EditContraptionForm
 //           _id={_id}
 //           name={name}
-
 //           description={description}
 //           done={done}
 //           getContraption={getContraption}

@@ -3,7 +3,6 @@ import Spell from "../components/Spell";
 import CreateSpell from "../components/CreateSpell";
 import spellsService from "../services/spells.service";
 
-
 function SpellsBookPage() {
   const [spells, setSpells] = useState(null);
   const [showCreateSpell, setShowCreateSpell] = useState(false);
@@ -23,7 +22,6 @@ function SpellsBookPage() {
 
   const deleteSpell = async (id) => {
     try {
-
       await spellsService.delete(id);
       getSpells();
     } catch (error) {
@@ -59,11 +57,13 @@ function SpellsBookPage() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div class="d-flex justify-content-center">
       <div>
         {!showCreateSpell && (
-          <div style={{ textAlign: "right" }}>
-            <button onClick={handleAddSpell}>Añadir hechizo</button>
+          <div class="text-right">
+            <button class="btn btn-primary" onClick={handleAddSpell}>
+              Añadir hechizo
+            </button>
           </div>
         )}
 
@@ -76,13 +76,22 @@ function SpellsBookPage() {
           </div>
         )}
 
-        <div>
+        <div class="row">
           {!spells ? (
-            <div style={{ textAlign: "center" }}>
+            <div class="text-center">
               <p>Cargando...</p>
             </div>
           ) : (
-            <div>{renderSpells()}</div>
+            <div class="row">
+              {renderSpells().map((spell, index) => (
+                <div
+                  class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
+                  key={index}
+                >
+                  {spell}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

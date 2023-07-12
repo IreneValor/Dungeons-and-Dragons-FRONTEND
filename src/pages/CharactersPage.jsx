@@ -24,6 +24,8 @@ function CharactersPage() {
       setCharacters(res.data);
     } catch (error) {
       console.log(error);
+      console.log(res.data);
+      console.log(setCharacters);
     }
   };
 
@@ -60,33 +62,39 @@ function CharactersPage() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <div>
-        {!showCreateCharacter && characters && (
-          <div style={{ textAlign: "right" }}>
-            <button onClick={handleAddCharacter}>Añadir personaje</button>
-          </div>
-        )}
+    <div class="d-flex justify-content-center">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            {!showCreateCharacter && characters && (
+              <div class="text-right">
+                <button class="btn btn-primary" onClick={handleAddCharacter}>
+                  Añadir personaje
+                </button>
+              </div>
+            )}
 
-        {showCreateCharacter && (
-          <div>
-            <CreateCharacter
-              getCharacters={getCharacters}
-              onCancel={handleCancelAddCharacter}
-            />
-          </div>
-        )}
+            {showCreateCharacter && (
+              <div>
+                <CreateCharacter
+                  getCharacters={getCharacters}
+                  onCancel={handleCancelAddCharacter}
+                />
+              </div>
+            )}
 
-        <div>
-          {!characters ? (
-            <div style={{ textAlign: "center" }}>
-              <p>No hay personajes</p>
+            <div>
+              {!characters ? (
+                <div class="text-center">
+                  <p>No hay personajes</p>
+                </div>
+              ) : characters.length ? (
+                <div>{renderCharacters()}</div>
+              ) : (
+                <p>No hay datos</p>
+              )}
             </div>
-          ) : characters.length ? (
-            <div>{renderCharacters()}</div>
-          ) : (
-            <p>No hay datos</p>
-          )}
+          </div>
         </div>
       </div>
     </div>
