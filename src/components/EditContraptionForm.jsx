@@ -5,18 +5,22 @@ import { TOKEN_NAME } from "../context/auth.context";
 export default function EditContraptionForm({
   _id,
   name,
-  type,
   description,
   done,
   getContraption,
   redirectToDetail,
+  equipment_category,
+  cost,
+  weight,
 }) {
   const [data, setData] = useState({
     _id,
     name: name || "",
-    type: type || "",
     description: description || "",
     done: done || false,
+    equipment_category: equipment_category?.name || "",
+    cost: cost,
+    weight: weight || 0,
   });
 
   const [isChecked, setIsChecked] = useState(done);
@@ -48,7 +52,6 @@ export default function EditContraptionForm({
       getContraption();
       redirectToDetail();
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -60,15 +63,6 @@ export default function EditContraptionForm({
           type="text"
           name="name"
           value={data.name}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Type:
-        <input
-          type="text"
-          name="type"
-          value={data.type}
           onChange={handleChange}
         />
       </label>
@@ -87,6 +81,42 @@ export default function EditContraptionForm({
           name="done"
           checked={isChecked}
           onChange={handleCheckboxChange}
+        />
+      </label>
+      <label>
+        Equipment Category:
+        <input
+          type="text"
+          name="equipment_category"
+          value={data.equipment_category}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Cost:
+        <input
+          type="text"
+          name="quantity"
+          value={data.cost.quantity}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Unit:
+        <input
+          type="text"
+          name="unit"
+          value={data.cost.unit}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Weight:
+        <input
+          type="number"
+          name="weight"
+          value={data.weight}
+          onChange={handleChange}
         />
       </label>
       <button type="submit">Save</button>

@@ -1,0 +1,291 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('https://i.pinimg.com/originals/69/56/a8/6956a85ae2347106201ddb799519682b.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #AFAFAF;
+    font-family: 'Alegreya', serif;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #000000CC;
+    font-size: 15px;
+    padding-right:50px;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #C9C9C9;
+    padding: 9px 9.75px;
+  }
+  
+  .logo{
+      width: 80px;
+      height: 80px;
+      overflow: hidden; /* Oculta cualquier parte de la imagen que sobrepase el div */	
+      margin-left: 30px;	
+  }
+  
+  .logo img{
+    width: 100%; /* Ajusta el tamaño de la imagen para que ocupe todo el ancho del div */
+    height: 100%; /* Ajusta el tamaño de la imagen para que ocupe todo el alto del div */
+    object-fit: cover; /* Ajusta el tamaño de la imagen para que cubra todo el div */		
+  }
+  
+  
+  button.primary-button {
+    color: #000;
+    font-size: 16px;
+    font-family: 'Alegreya', serif;
+    background-color: #E0CA3A;
+    padding: 7px 10px 7px 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0 1px 1px #999999;
+    border: 0px;
+  }
+  
+  button.icon-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #E0CA3A;
+    display: flex;
+    font-size: 14px;
+  }
+  
+    .small-content-buttons-div {
+      display: flex;
+      justify-content: flex-end;
+  
+    }
+
+    .small-content-buttons-div a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .small-content-buttons-div p {
+      margin-left:5px;
+    }
+                .small-content-buttons-div button {
+                  margin-right: 80px;
+                }
+
+  .content-buttons-div {
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  .content-buttons-div a {
+    text-decoration: none;
+    color:black;
+  }
+  
+  .content-buttons-div button {
+    margin:15px;
+    }
+
+  .content-container {
+    color: #AFAFAF;
+    font-size: 16px;
+    font-family: 'Alegreya', serif;
+    background-color: #000000CC;
+    margin: 100px 200px;
+    padding: 30px;
+    border-radius: 10px;
+    
+  }
+  
+  .detail-container {
+    color: #AFAFAF;
+    font-size: 16px;
+    font-family: 'Alegreya', serif;
+    background-color: #000000CC;
+    margin:25px;
+    padding: 30px;
+    border-radius: 10px;
+    
+  }
+  header {
+    text-align: left;
+    color: #E0CA3A;
+    font-size: 16px;
+    padding: 2px 0px 15px;
+    margin-left: 10px; /* Añadimos un margen izquierdo a la cabecera */
+  }
+  
+  .character-cards-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .spell-card {
+    background-color: #FFFFFF0D;
+    color: #AFAFAF;
+    font-size: 16px;
+    border-radius: 10px;
+    margin: 5px 10px;
+    padding: 5px 10px;
+    width: 30%;
+  }
+  
+  /* Estilos para la card */
+  .character-card {
+    display: flex;
+    background-color: #FFFFFF0D;
+    color: #AFAFAF;
+    font-size: 16px;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 5px 10px;
+    width: 90%;
+  }
+  
+  .character-img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .character-img-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 10px; /* Agregamos un margen derecho para separar la imagen del contenido */
+  }
+  
+  .character-info {
+    text-align: right; /* Alineamos el texto a la derecha */
+     flex: 1; /* Hace que la información del personaje ocupe todo el espacio disponible */
+  }
+  
+  .character-info p {
+    margin: 5px 0;
+  }
+  
+  .spells-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .spell-img-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .spell-img {
+    width: 100px; /* Ajustar el tamaño de la imagen según sea necesario */
+    height: 100px; /* Ajustar el tamaño de la imagen según sea necesario */
+    border-radius: 50%; /* Para que la imagen tenga forma circular */
+  }
+  
+  .spell-info {
+    margin: 20px;
+  }
+  
+  .spell-info h2 {
+    margin-bottom: 5px;
+  }
+  
+  .spell-info p {
+    margin: 5px 0;
+  }
+  
+  .contraptions-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .contraption-card {
+    display: flex;
+    background-color: #FFFFFF0D;
+    color: #AFAFAF;
+    font-size: 16px;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 5px 10px;
+    justify-content: space-between;
+  }
+  
+  .contraption-img-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .contraption-img {
+    width: 100px; /* Ajustar el tamaño de la imagen según sea necesario */
+    height: 100px; /* Ajustar el tamaño de la imagen según sea necesario */
+    border-radius: 50%; /* Para que la imagen tenga forma circular */
+  }
+  
+  .contraption-info {
+    margin-top: 25px;
+  }
+  
+  .contraption-info h2 {
+    margin-bottom: 5px;
+  }
+  
+  .contraption-info p {
+    margin: 5px 0;
+  }
+  
+  .contraption-buttons {
+    display: flex;
+    align-items: center; /* Centra verticalmente los botones */
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+  .contraption-buttons a {
+  text-decoration: none;
+  color: black;
+  }
+  
+  /* Estilos para los botones de edición y borrado */
+  .character-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centra verticalmente los botones */
+    margin:25px;
+    
+  }
+  .edit-button, .delete-button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex; /* Convertimos los botones en contenedores flex */
+    justify-content: center; /* Centramos el contenido horizontalmente */
+    align-items: center; /* Centramos el contenido verticalmente */
+  }
+  
+  .edit-button img, .delete-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  
+  /* Estilos para el nombre */
+  .character-name {
+    display: flex;
+    align-items: center; /* Centramos verticalmente el nombre */
+    margin-left:10px;
+  }

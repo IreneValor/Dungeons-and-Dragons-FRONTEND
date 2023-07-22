@@ -21,7 +21,6 @@ export default function CreateSpell({ getSpells }) {
     e.preventDefault();
     setLoading(true);
     try {
-      // const token = localStorage.getItem(TOKEN_NAME);
       await spellsService.create(data);
       getSpells();
       setLoading(false);
@@ -31,18 +30,20 @@ export default function CreateSpell({ getSpells }) {
         desc: "",
       });
     } catch (error) {
-      console.log(error);
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Create Spell</h2>
+    <div className="d-flex flex-column">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="m-3">
+          <h4>Create Spell</h4>
+        </div>
+        <div className="m-3">
           <label htmlFor="name">Name</label>
           <input
+            className="m-2"
             type="text"
             name="name"
             value={data.name}
@@ -51,9 +52,10 @@ export default function CreateSpell({ getSpells }) {
           />
         </div>
 
-        <div>
+        <div className="m-3">
           <label htmlFor="desc">Description</label>
           <input
+            className="m-2"
             type="text"
             name="desc"
             value={data.desc}
@@ -61,9 +63,10 @@ export default function CreateSpell({ getSpells }) {
             required
           />
         </div>
-        <div>
+        <div className="m-3">
           <label htmlFor="level">Level</label>
           <input
+            className="m-2"
             type="number"
             name="level"
             value={data.level}
@@ -71,149 +74,12 @@ export default function CreateSpell({ getSpells }) {
             required
           />
         </div>
-        <div>
-          <button type="submit">Save</button>
+        <div class="content-buttons-div">
+          <button class="btn bnt-primary primary-button" type="submit">
+            Save
+          </button>
         </div>
       </form>
     </div>
   );
 }
-// import React, { useState } from "react";
-
-// import { TOKEN_NAME } from "../context/auth.context";
-// import spellsService from "../services/spells.service";
-
-// export default function CreateSpellsService({ getSpells }) {
-//   const [data, setData] = useState({});
-//   const [loading, setLoading] = useState(false);
-
-//   const handleChange = (e) => {
-//     setData({
-//       ...data,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const token = localStorage.getItem(TOKEN_NAME);
-//       await spellsService.create(data, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       getSpells();
-//       setLoading(false);
-//     } catch (error) {
-//       console.log(error);
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Create Spell</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <label htmlFor="name">Name</label>
-//           <input
-//             type="text"
-//             name="name"
-//             value={data.name}
-//             onChange={handleChange}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="type">Type</label>
-//           <textarea
-//             multiple
-//             type="text"
-//             name="type"
-//             value={data.type}
-//             onChange={handleChange}
-//           ></textarea>
-//         </div>
-//         <div>
-//           <label htmlFor="description">Description</label>
-//           <input
-//             type="text"
-//             name="description"
-//             value={data.description}
-//             onChange={handleChange}
-//           />
-//         </div>
-//         <div>
-//           <button type="submit">Save</button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
-// // import React, { useState } from "react";
-// // import spellsService from "../services/spells.service";
-
-// // export default function CreateSpellsService({ getSpells }) {
-// //   const [data, setData] = useState({});
-// //   const [loading, setLoading] = useState(false);
-
-// //   const handleChange = (e) => {
-// //     setData({
-// //       ...data,
-// //       [e.target.name]: e.target.value,
-// //     });
-// //   };
-
-// //   const handleSubmit = async (e) => {
-// //     e.preventDefault();
-// //     setLoading(true);
-// //     try {
-// //       await spellsService.create(data);
-// //       getSpells();
-// //       setLoading(false);
-// //     } catch (error) {
-// //       console.log(error);
-// //       setLoading(false);
-// //     }
-// //   };
-
-// //   return (
-// //     <div>
-// //       <h2>Create Spell</h2>
-// //       <form onSubmit={handleSubmit}>
-// //         <div>
-// //           <label htmlFor="name">Name</label>
-// //           <input
-// //             type="text"
-// //             name="name"
-// //             value={data.name}
-// //             onChange={handleChange}
-// //           />
-// //         </div>
-// //         <div>
-// //           <label htmlFor="type">Type</label>
-// //           <textarea
-// //             multiple
-// //             type="text"
-// //             name="type"
-// //             value={data.type}
-// //             onChange={handleChange}
-// //           ></textarea>
-// //         </div>
-// //         <div>
-// //           <label htmlFor="description">Description</label>
-// //           <input
-// //             type="text"
-// //             name="description"
-// //             value={data.description}
-// //             onChange={handleChange}
-// //           />
-// //         </div>
-// //         <div>
-// //           <button type="submit">Save</button>
-// //         </div>
-// //       </form>
-// //     </div>
-// //   );
-// // }

@@ -1,41 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import SpellDetail from "../components/SpellDetail";
-
 import spellsService from "../services/spells.service";
 
 const SpellDetailPage = () => {
   const { id } = useParams();
   const [spell, setSpell] = useState(null);
+  const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
 
   useEffect(() => {
     const getSpell = async () => {
       try {
-        const res = await spellsService.getOne(id);
-        console.log(res);
+        let res;
+        if (isObjectId) {
+          res = await spellsService.getOne(id);
+        } else {
+          res = await spellsService.getByIndex(id);
+        }
         setSpell(res.data);
-
-        console.log(res.data);
-        console.log(id);
       } catch (error) {
-        console.log(error);
       }
     };
 
     getSpell();
-  }, [id]);
+  }, [id, isObjectId]);
 
   return (
-    <div>
-      <h1 class="mb-4">Spell Detail</h1>
-      {spell ? (
-        <div class="card">
-          <SpellDetail spell={spell} />
-        </div>
-      ) : (
-        <p>No data available</p>
-      )}
+    <div className="bg-transparent">
+      {spell ? <SpellDetail spell={spell} /> : <p>No data available</p>}
     </div>
   );
 };

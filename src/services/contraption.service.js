@@ -28,6 +28,16 @@ class ContraptionService {
     // return this.api.get(`/contraptions/${id}`);
     return this.api.get(`https://www.dnd5eapi.co/api/equipment/${id}`);
   }
+  addContraptions(characterId, contraptions) {
+    return this.api.post(`/characters/${characterId}/addContraptions`, {
+      contraptions,
+    });
+  }
+  removeContraption(characterId, contraptionId) {
+    return this.api.delete(
+      `/characters/${characterId}/removeContraption/${contraptionId}`
+    );
+  }
 }
 
 const contraptionService = new ContraptionService();

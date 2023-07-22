@@ -17,12 +17,11 @@ function AuthProviderWrapper({ children }) {
   }, []);
 
   const storeToken = (token) => {
-    //espera el TOKEN y lo almacena en localStorage
     localStorage.setItem(TOKEN_NAME, token);
   };
 
   const removeToken = () => {
-    localStorage.removeItem(TOKEN_NAME); //eliminar token al cerrar sesion en localstorage
+    localStorage.removeItem(TOKEN_NAME); 
   };
 
   const logout = () => {

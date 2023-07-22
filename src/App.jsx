@@ -8,7 +8,6 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import SpellsBookPage from "./pages/SpellsBookPage";
 import ContraptionsPage from "./pages/ContraptionsPage";
-// import CharactersPage from "./pages/CharactersPage";
 import SpellDetailPage from "./pages/SpellDetailPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
 import "bootstrap/dist/css/bootstrap.css";
@@ -28,46 +27,8 @@ function App() {
             </Private>
           }
         />
-        <Route
-          path="/contraptions"
-          element={
-            <Private>
-              <ContraptionsPage />
-            </Private>
-          }
-        />
-        <Route
-          path="/contraptions/:id"
-          element={
-            <Private>
-              <ContraptionDetailPage />
-            </Private>
-          }
-        />
-        <Route
-          path="/spells"
-          element={
-            <Private>
-              <SpellsBookPage />
-            </Private>
-          }
-        />
-        <Route
-          path="/spells/:id"
-          element={
-            <Private>
-              <SpellDetailPage />
-            </Private>
-          }
-        />
-        {/* <Route
-          path="/characters"
-          element={
-            <Private>
-              <CharactersPage />
-            </Private>
-          }
-        /> */}
+
+        {/* DETALLE DEL PERSONAJE */}
         <Route
           path="/characters/:id"
           element={
@@ -76,6 +37,46 @@ function App() {
             </Private>
           }
         />
+
+        {/* CONTRAPTIONS DEL PERSONAJE */}
+        <Route
+          path="/characters/:characterId/contraptions"
+          element={
+            <Private>
+              <ContraptionsPage />
+            </Private>
+          }
+        />
+        {/* DETALLE CONTRAPTIONS PERSONAJE */}
+        <Route
+          path="/characters/:characterId/contraptions/:id"
+          element={
+            <Private>
+              <ContraptionDetailPage />
+            </Private>
+          }
+        />
+        {/* TODOS SPELLS DEL PERSONAJE */}
+        <Route
+          path="/characters/:characterId/spells"
+          element={
+            <Private>
+              <SpellsBookPage />
+            </Private>
+          }
+        />
+
+        {/* DETALLES DEL SPELL DEL PERSONAJE */}
+        <Route
+          path="/characters/:characterId/spells/:id"
+          element={
+            <Private>
+              <SpellDetailPage />
+            </Private>
+          }
+        />
+
+        {/* CREAR NUEVO PERSONAJE */}
         <Route
           path="/characters/create"
           element={

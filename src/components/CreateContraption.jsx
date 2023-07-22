@@ -1,9 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import contraptionService from "../services/contraption.service";
-import { TOKEN_NAME } from "../context/auth.context";
 
 export default function CreateContraption({ getContraptions }) {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    name: "",
+    type: "",
+    description: "",
+    quantity: 0,
+  });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -17,15 +21,16 @@ export default function CreateContraption({ getContraptions }) {
     e.preventDefault();
     setLoading(true);
     try {
-  
       await contraptionService.create(data);
-      console.log("datos correctos contraptions")
-               console.log("data");
       getContraptions();
-         console.log("data");
       setLoading(false);
+      setData({
+        name: "",
+        type: "",
+        description: "",
+        quantity: 0,
+      });
     } catch (error) {
-      console.log(error);
       setLoading(false);
     }
   };
@@ -39,26 +44,25 @@ export default function CreateContraption({ getContraptions }) {
           <input
             type="text"
             name="name"
-            value={data.name}
+            value={data.name || ""}
             onChange={handleChange}
           />
         </div>
         <div>
           <label htmlFor="type">Tipo</label>
-          <textarea
-            multiple
+          <input
             type="text"
             name="type"
-            value={data.type}
+            value={data.type || ""}
             onChange={handleChange}
-          ></textarea>
+          />
         </div>
         <div>
           <label htmlFor="description">Descripción</label>
           <input
             type="text"
             name="description"
-            value={data.description}
+            value={data.description || ""}
             onChange={handleChange}
           />
         </div>
@@ -67,12 +71,12 @@ export default function CreateContraption({ getContraptions }) {
           <input
             type="number"
             name="quantity"
-            value={data.quantity}
+            value={data.quantity || ""}
             onChange={handleChange}
           />
         </div>
         <div>
-          <button type="submit">Guardar</button>
+          <button type="submit">Save</button>
         </div>
       </form>
     </div>

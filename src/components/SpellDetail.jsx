@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import spellsService from "../services/spells.service";
 import { TOKEN_NAME } from "../context/auth.context";
+import { Link } from "react-router-dom";
 
 const SpellDetail = ({ spell }) => {
   const [loadedSpell, setLoadedSpell] = useState(null);
@@ -14,7 +15,6 @@ const SpellDetail = ({ spell }) => {
         const response = await spellsService.getOne(spell._id);
         setLoadedSpell(response.data);
       } catch (error) {
-        console.error("Error fetching spell detail:", error);
       }
     };
 
@@ -40,7 +40,6 @@ const SpellDetail = ({ spell }) => {
       setLoadedSpell(editedSpell);
       setIsEditing(false);
     } catch (error) {
-      console.error("Error saving spell:", error);
     }
   };
 
@@ -49,7 +48,10 @@ const SpellDetail = ({ spell }) => {
   };
 
   return (
-    <div>
+    <div class="content-container">
+      <header>
+        <h1 className="mb-4">Spell Detail</h1>
+      </header>
       <h1>
         {isEditing ? (
           <input
@@ -101,19 +103,7 @@ const SpellDetail = ({ spell }) => {
           loadedSpell.range
         )}
       </p>
-      <p>
-        Components:{" "}
-        {isEditing ? (
-          <input
-            type="text"
-            name="components"
-            value={editedSpell.components.join(", ")}
-            onChange={handleChange}
-          />
-        ) : (
-          loadedSpell.components.join(", ")
-        )}
-      </p>
+
       {loadedSpell.material && (
         <p>
           Material:{" "}
@@ -248,18 +238,36 @@ const SpellDetail = ({ spell }) => {
           loadedSpell.classes.map((cls) => cls.name).join(", ")
         )}
       </p>
-
-      {isEditing ? (
-        <div>
-          <button onClick={handleCancelButtonClick}>Cancel</button>
-          <button onClick={handleSaveButtonClick}>Save</button>
-        </div>
-      ) : (
-        <button onClick={handleEditButtonClick}>Edit</button>
-      )}
+      <div class="content-buttons-div">
+        {isEditing ? (
+          <div>
+            <button
+              class="btn btn-primary primary-button"
+              onClick={handleCancelButtonClick}
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-primary primary-button"
+              onClick={handleSaveButtonClick}
+            >
+              Save
+            </button>
+          </div>
+        ) : (
+          <button
+            class="btn btn-primary primary-button"
+            onClick={handleEditButtonClick}
+          >
+            Edit
+          </button>
+        )}
+        {/* <button class="btn btn-primary primary-button">
+          <Link to={`/characters/${characterId}`}>Return to character</Link>
+        </button> */}
+      </div>
     </div>
   );
 };
 
 export default SpellDetail;
-

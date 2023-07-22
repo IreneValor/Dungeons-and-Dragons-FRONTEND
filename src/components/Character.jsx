@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import charactersService from "../services/characters.service";
 import { TOKEN_NAME } from "../context/auth.context";
-
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 export default function Character({
   _id,
   name,
@@ -13,42 +14,85 @@ export default function Character({
   alignment,
   image,
   getCharacters,
+  className,
 }) {
   const defaultImage =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQztsPd6Bijg8DIkFZW_nMaofbIRq_Pm0GR3w&usqp=CAU";
-
-  const deleteCharacter = async (id) => {
-    try {
-      const token = localStorage.getItem(TOKEN_NAME);
-      if (!token) {
-        console.log("Token no encontrado");
-        return;
-      }
-      await charactersService.delete(id);
-      getCharacters();
-    } catch (error) {
-      console.log(error);
-    }
+  const deleteCharacter = (id) => {
+    confirmAlert({
+      title: "confirm deletion?",
+      message: "Are you sure you want to delete this character?",
+      buttons: [
+        {
+          label: "Sí",
+          onClick: async () => {
+            // Aquí se realiza la acción de eliminación si el usuario elige "Sí"
+            try {
+              const token = localStorage.getItem(TOKEN_NAME);
+              if (!token) {
+                return;
+              }
+              await charactersService.delete(id);
+              getCharacters();
+            } catch (error) {
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   return (
-    <div>
-      <h1>{name}</h1>
-      <Link to={`/characters/${_id}`}>
-        {" "}
-        {/* Envuelve el enlace con la etiqueta Link */}
-        <img src={image || defaultImage} alt={name} />
-      </Link>
-      <p>Race: {race}</p>
-      <p>Class: {characterClass}</p>
-      <p>Level: {level}</p>
-      <p>Background: {background}</p>
-      <p>Alignment: {alignment}</p>
+    <div class="character-card">
+      <div class="character-img-div">
+        <Link to={`/characters/${_id}`}>
+          {" "}
+          <img class="character-img" src={image || defaultImage} alt={name} />
+        </Link>
+      </div>
+      <div class="character-name">
+        <strong>{className}</strong>
+      </div>
+      <div class="character-name">
+        <strong>{name}</strong>
+      </div>
+      <div class="row character-info justify-content-end">
+        <div class="col-lg-4 col-sm-12">
+          <p>
+            <strong>Race: </strong>
+            {race}
+          </p>
+          <p>
+            <strong>Class: </strong>
+            {characterClass}
+          </p>
+        </div>
 
-      <button onClick={() => deleteCharacter(_id)}>🗑</button>
-      {/* <Link to={`/characters/${_id}`}>
-        <button>View Details</button>
-      </Link> */}
+        <div class="col-lg-4 col-sm-12">
+          <p>
+            <strong>Level: </strong>
+            {level}
+          </p>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+          <p>
+            <strong>Alignment: </strong>
+            {alignment}
+          </p>
+        </div>
+      </div>
+      <div class="character-buttons">
+        <button
+          class="btn btn-primary delete-button"
+          onClick={() => deleteCharacter(_id)}
+        >
+          🗑 Delete
+        </button>
+      </div>
     </div>
   );
 }

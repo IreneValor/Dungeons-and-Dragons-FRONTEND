@@ -1,9 +1,37 @@
 import React, { useState } from "react";
 import charactersService from "../services/characters.service";
 
-export default function CreateCharacter({ getCharacters }) {
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
+
+const classOptions = [
+  "barbarian",
+  "bard",
+  "cleric",
+  "druid",
+  "fighter",
+  "monk",
+  "paladin",
+  "ranger",
+  "rogue",
+  "sorcerer",
+  "warlock",
+  "wizard",
+];
+ const [data, setData] = useState({
+   class: classOptions[0], // Corregir el nombre del campo a "class"
+ });
+ const [loading, setLoading] = useState(false);
+
+const CharacterCreateForm = ({ onSubmit, loading }) => {
+  const [data, setData] = useState({
+    name: "",
+    race: "",
+    classs: classOptions[0],
+    level: 1,
+    background: "",
+    alignment: "",
+    image: null,
+  });
+  
 
   const handleChange = (e) => {
     setData({
@@ -12,22 +40,31 @@ export default function CreateCharacter({ getCharacters }) {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await charactersService.create(data);
-      getCharacters();
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setData({
+        ...data,
+        image: file,
+      });
     }
   };
 
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   setLoading(true);
+   try {
+     await charactersService.create(data);
+     getCharacters();
+     setLoading(false);
+     onSubmit(data)
+   } catch (error) {
+     setLoading(false);
+   }
+ };
+
   return (
-    <div>
-      <h2>CREATE Character</h2>
+    <div className="content-container">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>
@@ -48,13 +85,14 @@ export default function CreateCharacter({ getCharacters }) {
           />
         </div>
         <div>
-          <label htmlFor="class">Class</label>
-          <input
-            type="text"
-            name="class"
-            value={data.class}
-            onChange={handleChange}
-          />
+          <label htmlFor="class">Class</label>{" "}
+          <select name="classs" value={data.classs} onChange={handleChange}>
+            {classOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="level">Level</label>
@@ -84,9 +122,17 @@ export default function CreateCharacter({ getCharacters }) {
           />
         </div>
         <div>
-          <button type="submit">Save</button>
+          <label htmlFor="image">Image</label>
+          <input type="file" name="image" onChange={handleImageChange} />
+        </div>
+        <div>
+          <button type="submit" disabled={loading}>
+            Save
+          </button>
         </div>
       </form>
     </div>
   );
-}
+};
+
+export default CharacterCreateForm;

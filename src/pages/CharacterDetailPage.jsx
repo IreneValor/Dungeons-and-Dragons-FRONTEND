@@ -5,8 +5,6 @@ import CharacterDetail from "../components/CharacterDetail";
 function CharactersPage() {
   const [character, setCharacter] = useState(null);
   const [showCreateCharacter, setShowCreateCharacter] = useState(false);
-  const params = useParams();
-  console.log(params);
   const { id } = useParams();
 
   useEffect(() => {
@@ -18,7 +16,6 @@ function CharactersPage() {
       const res = await charactersService.getOne(id);
       setCharacter(res.data);
     } catch (error) {
-      console.log(error);
     }
   };
 

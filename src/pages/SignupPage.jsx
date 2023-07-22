@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/auth.service";
 const API_URL = "http://localhost:5005";
-import axios from "axios";
 
 const SignupPage = () => {
   const [signupData, setSignupData] = useState({
@@ -23,37 +22,13 @@ const SignupPage = () => {
 
     const requestBody = { email, password, username };
 
-    console.log(requestBody);
-    //cambiar este axios por el modelo que hay en LoginPage que es este
-    //  authService
-    //   .login(loginData)
-    //   .then(({ data }) => {
-    //     storeToken(data.authToken);
-    //     authenticate();
-    //     navigate("/");
-    //   })
-    //   .catch((err) => console.log(err));
     authService
       .signup(signupData)
       .then(({ data }) => {
-        // storeToken(data.authToken);
-        // console.log(storeToken);
-        // authenticate();
         navigate("/");
       })
       .catch((err) => console.log(err));
   };
-
-  //   axios
-  //     .post(`${API_URL}/auth/signup`, requestBody)
-  //     .then((response) => {
-  //       navigate("/login");
-  //     })
-  //     .catch((error) => {
-  //       const errorDescription = error.response.data.message;
-  //       setErrorMessage(errorDescription);
-  //     });
-  // };
 
   const { username, password, email } = signupData;
 

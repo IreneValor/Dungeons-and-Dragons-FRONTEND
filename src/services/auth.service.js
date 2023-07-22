@@ -1,8 +1,8 @@
+import { TOKEN_NAME } from "../context/auth.context";
 import apiInstance from "./apiInstance";
-console.log(apiInstance);
+
 class AuthService {
   constructor() {
-    console.log(apiInstance);
     this.api = apiInstance;
   }
 
@@ -15,10 +15,18 @@ class AuthService {
   }
 
   verify(token) {
-    // Agrega el token como parámetro en la solicitud GET
     return this.api.get(`/auth/verify`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+  }
+
+  getAll(token) {
+    const userId = token;
+
+    if (!userId) {
+      return Promise.reject("Token no válido");
+    }
+    return this.api.get(`/characters/${userId}`);
   }
 }
 

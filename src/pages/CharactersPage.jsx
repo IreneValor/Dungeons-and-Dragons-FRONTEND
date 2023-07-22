@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Character from "../components/Character";
-// import CreateCharacter from "../components/CreateCharacter";
-
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";
 
@@ -17,15 +15,12 @@ function CharactersPage() {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
       if (!token) {
-        console.log("Token no encontrado");
         return;
       }
       const res = await charactersService.getAll();
       setCharacters(res.data);
     } catch (error) {
-      console.log(error);
-      console.log(res.data);
-      console.log(setCharacters);
+
     }
   };
 
@@ -33,13 +28,11 @@ function CharactersPage() {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
       if (!token) {
-        console.log("Token no encontrado");
         return;
       }
       await charactersService.delete(id);
       getCharacters();
     } catch (error) {
-      console.log(error);
     }
   };
 

@@ -24,6 +24,11 @@ class CharactersService {
   getOne(id) {
     return this.api.get(`/characters/${id}`);
   }
+  addContraption(characterId, contraptionId) {
+    return this.api.post(`/characters/${characterId}/addContraption`, {
+      contraptionId,
+    });
+  }
 }
 
 const charactersService = new CharactersService();

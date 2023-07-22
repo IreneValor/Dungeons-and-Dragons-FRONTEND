@@ -2,97 +2,189 @@ import React, { useEffect, useState } from "react";
 import Spell from "../components/Spell";
 import CreateSpell from "../components/CreateSpell";
 import spellsService from "../services/spells.service";
+import { Link, useLocation, useParams } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 function SpellsBookPage() {
   const [spells, setSpells] = useState(null);
   const [showCreateSpell, setShowCreateSpell] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [spellCreated, setSpellCreated] = useState(false);
+  const { characterId } = useParams(); // id personaje
+  const [selectedSpells, setSelectedSpells] = useState({});
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const level = queryParams.get("level");
+  const className = queryParams.get("className");
 
-  useEffect(() => {
-    getSpells();
-  }, []);
 
-  const getSpells = async () => {
+  const getSpellsByClassAndLevel = async (spellClass, level) => {
     try {
-      const res = await spellsService.getAll();
+      const res = await spellsService.getFilteredByClassAndLevel(
+        spellClass,
+        level
+      );
+
       setSpells(res.data);
     } catch (error) {
-      console.log(error);
     }
   };
+
+  useEffect(() => {
+    getSpellsByClassAndLevel("wizard", 1);
+  }, []);
 
   const deleteSpell = async (id) => {
     try {
       await spellsService.delete(id);
-      getSpells();
+      getSpellsByClassAndLevel("wizard", 1);
+      toast.success("Hechizo eliminado correctamente", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     } catch (error) {
-      console.log(error);
+      toast.error("Error al eliminar el hechizo", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     }
   };
 
+  const handleAddSpell = () => {
+    setShowCreateSpell(true);
+    setSpellCreated(false);
+  };
+
+  const handleCancelAddSpell = () => {
+    setSpellCreated(false);
+  };
+  const handleCancelSpellCreated = () => {
+    setSpellCreated(false);
+  };
+  const handleSpellChoose = async (spellId) => {
+    setSelectedSpells((prevSelectedSpells) => ({
+      ...prevSelectedSpells,
+      [spellId]: !prevSelectedSpells[spellId],
+    }));
+    try {
+      await spellsService.addSpells(characterId, [spellId]);
+      toast.success("Spell añadido a la mochila", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } catch (error) {
+     
+    }
+  };
+
+  const handleRemoveSpell = async (characterId, spellId) => {
+    try {
+      await spellsService.removeSpell(characterId, spellId);
+
+      toast.success("Contraption eliminado de la mochila", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } catch (error) {
+
+    }
+
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
   const renderSpells = () => {
-    if (spells && spells.length > 0) {
-      return spells.map((spell) => (
-        <Spell key={spell._id} deleteSpell={deleteSpell} {...spell} />
+    let filteredSpells = spells;
+    if (searchValue) {
+      const searchQuery = searchValue.toLowerCase();
+      filteredSpells = spells.filter(
+        (spell) => spell.name && spell.name.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    if (filteredSpells && filteredSpells.length > 0) {
+      return filteredSpells.map((spell) => (
+        <Spell
+          key={spell._id || spell.index}
+          _id={spell._id || spell.index}
+          deleteSpell={deleteSpell}
+          handleSpellChoose={handleSpellChoose}
+          handleRemoveSpell={handleRemoveSpell}
+          characterId={characterId}
+          isDetail={true}
+          {...spell}
+        />
       ));
     } else {
       return <p>No hay datos</p>;
     }
   };
 
-  const handleAddSpell = () => {
-    setShowCreateSpell(true);
-  };
-
-  const handleCancelAddSpell = () => {
-    setShowCreateSpell(false);
-  };
-
-  const handleCreateSpell = async (spellData) => {
-    try {
-      await spellsService.create(spellData);
-      getSpells();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
-    <div class="d-flex justify-content-center">
-      <div>
-        {!showCreateSpell && (
-          <div class="text-right">
-            <button class="btn btn-primary" onClick={handleAddSpell}>
-              Añadir hechizo
-            </button>
-          </div>
-        )}
+    <div>
+      <div class="content-buttons-div">
+        <button class="btn btn-primary primary-button">
+          <Link to={`/characters/${characterId}`}>Return to character</Link>
+        </button>
+      </div>
 
-        {showCreateSpell && (
-          <div>
-            <CreateSpell
-              getSpells={handleCreateSpell}
-              onCancel={handleCancelAddSpell}
-            />
-          </div>
-        )}
-
-        <div class="row">
-          {!spells ? (
-            <div class="text-center">
-              <p>Cargando...</p>
-            </div>
-          ) : (
-            <div class="row">
-              {renderSpells().map((spell, index) => (
-                <div
-                  class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
-                  key={index}
-                >
-                  {spell}
-                </div>
-              ))}
+      <div className="justify-content-center">
+        <div class="content-container">
+          <ToastContainer />
+          <header>
+            <h1>Spells</h1>
+          </header>
+          {!showCreateSpell && (
+            <div className="text-right content-buttons-div">
+              <button
+                className="btn btn-primary primary-button"
+                onClick={handleAddSpell}
+              >
+                Añadir hechizo
+              </button>
             </div>
           )}
+          {showCreateSpell && !spellCreated && (
+            <div>
+              <CreateSpell
+                getSpells={getSpellsByClassAndLevel}
+                onCancel={handleCancelAddSpell}
+                // characterId={characterId}
+              />
+            </div>
+          )}
+          {spellCreated && (
+            <div>
+              <p>Spell creado correctamente</p>
+            </div>
+          )}
+          <div className="mb-3 w-50">
+            <input
+              type="text"
+              className="form-control"
+              value={searchValue}
+              onChange={handleSearchChange}
+              placeholder="Buscar hechizos por nombre..."
+            />
+          </div>
+
+          <div className="row">
+            {!spells ? (
+              <div className="text-center">
+                <p>Cargando...</p>
+              </div>
+            ) : (
+              <div className="spells-cards">{renderSpells()}</div>
+            )}
+          </div>
+          {spellCreated && (
+            <div>
+              <p>Spell creado correctamente</p>
+              <button onClick={handleCancelSpellCreated}>OK</button>
+            </div>
+          )}
+          <button class="btn btn-primary primary-button">
+            <Link to={`/characters/${characterId}`}>Return to character</Link>
+          </button>
         </div>
       </div>
     </div>
@@ -100,94 +192,3 @@ function SpellsBookPage() {
 }
 
 export default SpellsBookPage;
-// import React, { useEffect, useState } from "react";
-// import Spell from "../components/Spell";
-// import CreateSpell from "../components/CreateSpell";
-// import spellsService from "../services/spells.service";
-
-// function SpellsBookPage() {
-//   const [spells, setSpells] = useState(null);
-//   const [showCreateSpell, setShowCreateSpell] = useState(false);
-
-//   useEffect(() => {
-//     getSpells();
-//   }, []);
-
-//   const getSpells = async () => {
-//     try {
-//       const res = await spellsService.getAll();
-//       setSpells(res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const deleteSpell = async (id) => {
-//     try {
-//       await spellsService.delete(id);
-//       getSpells();
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const renderSpells = () => {
-//     if (spells && spells.length > 0) {
-//       return spells.map((spell) => (
-//         <Spell deleteSpell={deleteSpell} key={spell._id} {...spell} />
-//       ));
-//     } else {
-//       return <p>No hay datos</p>;
-//     }
-//   };
-
-//   const handleAddSpell = () => {
-//     setShowCreateSpell(true);
-//   };
-
-//   const handleCancelAddSpell = () => {
-//     setShowCreateSpell(false);
-//   };
-
-//   const handleCreateSpell = async (spellData) => {
-//     try {
-//       await spellsService.create(spellData);
-//       getSpells();
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   return (
-//     <div style={{ display: "flex", justifyContent: "center" }}>
-//       <div>
-//         {!showCreateSpell && (
-//           <div style={{ textAlign: "right" }}>
-//             <button onClick={handleAddSpell}>Añadir hechizo</button>
-//           </div>
-//         )}
-
-//         {showCreateSpell && (
-//           <div>
-//             <CreateSpell
-//               getSpells={handleCreateSpell}
-//               onCancel={handleCancelAddSpell}
-//             />
-//           </div>
-//         )}
-
-//         <div>
-//           {!spells ? (
-//             <div style={{ textAlign: "center" }}>
-//               <p>Cargando...</p>
-//             </div>
-//           ) : (
-//             <div>{renderSpells()}</div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default SpellsBookPage;
