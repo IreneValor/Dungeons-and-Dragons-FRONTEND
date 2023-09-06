@@ -50,7 +50,6 @@ export default function CreateCharacterPage() {
     if (input) {
       input.addEventListener("change", function (e) {
         if (e.target.files[0]) {
-          // convert it to base64
           const reader = new FileReader();
           reader.readAsDataURL(e.target.files[0]);
           reader.onload = () => {
@@ -180,19 +179,7 @@ export default function CreateCharacterPage() {
             ))}
           </select>
         </div>
-        {/* <div class="mb-3">
-          <label for="alignment" class="form-label">
-            Alignment
-          </label>
-          <input
-            type="text"
-            class="form-control"
-            id="alignment"
-            name="alignment"
-            value={data.alignment}
-            onChange={handleChange}
-          />
-        </div> */}
+
         <div class="mb-3">
           <label for="image" class="form-label">
             Images
@@ -223,6 +210,12 @@ export default function CreateCharacterPage() {
             Save
           </button>
         </div>
+
+        {!data.image && (
+          <div class="alert alert-danger mt-3">
+            Please upload an image before saving.
+          </div>
+        )}
       </form>
     </div>
   );
