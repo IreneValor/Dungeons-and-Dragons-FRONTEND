@@ -16,9 +16,18 @@ const classOptions = [
   "warlock",
   "wizard",
 ];
+const alignmentOptions = [
+  "Neutral",
+  "Lawful",
+  "Chaotic",
+];
+
+
  const [data, setData] = useState({
-   class: classOptions[0], // Corregir el nombre del campo a "class"
+   class: classOptions[0],
+   alignment: alignmentOptions[0] // Corregir el nombre del campo a "class"
  });
+;
  const [loading, setLoading] = useState(false);
 
 const CharacterCreateForm = ({ onSubmit, loading }) => {
@@ -28,7 +37,7 @@ const CharacterCreateForm = ({ onSubmit, loading }) => {
     classs: classOptions[0],
     level: 1,
     background: "",
-    alignment: "",
+    alignment: alignmentOptions[0],
     image: null,
   });
   
@@ -113,6 +122,20 @@ const CharacterCreateForm = ({ onSubmit, loading }) => {
           />
         </div>
         <div>
+          <label htmlFor="alignment">Alignment</label>{" "}
+          <select
+            name="alignment"
+            value={data.alignment}
+            onChange={handleChange}
+          >
+            {classOptions.map((alignment) => (
+              <alignment key={alignment} value={alignment}>
+                {alignment}
+              </alignment>
+            ))}
+          </select>
+        </div>
+        {/* <div>
           <label htmlFor="alignment">Alignment</label>
           <input
             type="text"
@@ -120,7 +143,7 @@ const CharacterCreateForm = ({ onSubmit, loading }) => {
             value={data.alignment}
             onChange={handleChange}
           />
-        </div>
+        </div> */}
         <div>
           <label htmlFor="image">Image</label>
           <input type="file" name="image" onChange={handleImageChange} />

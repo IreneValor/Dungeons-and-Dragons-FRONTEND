@@ -16,6 +16,7 @@ const classOptions = [
   "warlock",
   "wizard",
 ];
+const alignmentOptions = ["Neutral", "Lawful", "Chaotic"];
 
 const USER_ID = "64a1746dcbb8b17db6119021"; // Reemplazar con el ID de usuario correcto (puede ser una variable
 
@@ -27,7 +28,7 @@ export default function CreateCharacterPage() {
     classs: classOptions[0],
     level: "",
     background: "",
-    alignment: "",
+    alignment: alignmentOptions[0],
     image: null,
   });
 
@@ -160,7 +161,26 @@ export default function CreateCharacterPage() {
             onChange={handleChange}
           />
         </div>
+
         <div class="mb-3">
+          <label for="alignment" class="form-label">
+            Alignment
+          </label>
+          <select
+            name="alignment"
+            class="form-control"
+            id="alignment"
+            value={data.alignment}
+            onChange={handleChange}
+          >
+            {alignmentOptions.map((alignment) => (
+              <option key={alignment} value={alignment}>
+                {alignment}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* <div class="mb-3">
           <label for="alignment" class="form-label">
             Alignment
           </label>
@@ -172,7 +192,7 @@ export default function CreateCharacterPage() {
             value={data.alignment}
             onChange={handleChange}
           />
-        </div>
+        </div> */}
         <div class="mb-3">
           <label for="image" class="form-label">
             Images
