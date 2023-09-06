@@ -22,9 +22,7 @@ function ContraptionsPage() {
     try {
       const res = await contraptionService.getAll();
       setContraptions(res.data);
-    } catch (error) {
- 
-    }
+    } catch (error) {}
   };
   const deleteContraption = async (id) => {
     try {
@@ -33,9 +31,7 @@ function ContraptionsPage() {
       toast.success("gadget removed", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const handleAddContraption = () => {
@@ -61,9 +57,7 @@ function ContraptionsPage() {
       toast.success("Gadget added to the bag", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {
-    
-    }
+    } catch (error) {}
   };
   const handleRemoveContraption = async (contraptionId, characterId) => {
     try {
@@ -71,9 +65,7 @@ function ContraptionsPage() {
       toast.success("Gadget removed from the bag", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const renderContraptions = () => {

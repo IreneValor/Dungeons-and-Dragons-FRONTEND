@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import authService from "../services/auth.service";
 
-
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -19,14 +20,29 @@ const LoginPage = () => {
     setLoginData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    authService.login(loginData).then(({ data }) => {
+
+    try {
+      const { data } = await authService.login(loginData);
       storeToken(data.authToken);
       authenticate();
       navigate("/");
-    });
+    } catch (error) {
+      // Captura el error y establece el mensaje de error en el estado local
+      setErrorMessage(
+        "Credenciales incorrectas. Por favor, inténtelo de nuevo."
+      );
+    }
   };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   authService.login(loginData).then(({ data }) => {
+  //     storeToken(data.authToken);
+  //     authenticate();
+  //     navigate("/");
+  //   });
+  // };
 
   const { password, email } = loginData;
 
@@ -60,16 +76,29 @@ const LoginPage = () => {
         />
       </div>
 
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary">
+      <div className="mb-3">
+        <button type="submit" className="btn btn-primary">
           Login
         </button>
-        {/* <Link to="/signup">Signup</Link> */}
       </div>
-      {error && <p>{error}</p>}
+
+      {errorMessage && <p className="text-danger">{errorMessage}</p>}
     </form>
   );
 };
 
 export default LoginPage;
 
+{
+  /* <div class="mb-3">
+        <button type="submit" class="btn btn-primary">
+          Login
+        </button>
+      </div>
+      {error && <p>{error}</p>}
+    </form>
+  );
+};
+
+export default LoginPage; */
+}
