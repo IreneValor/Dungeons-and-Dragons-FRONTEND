@@ -10,11 +10,11 @@ const LoginPage = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [failedAttempts, setFailedAttempts] = useState(0); 
-  const maxFailedAttempts = 2; 
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const maxFailedAttempts = 2;
 
-  const [showRedirectMessage, setShowRedirectMessage] = useState(false); 
-  const redirectMessageTimeout = 2000; 
+  const [showRedirectMessage, setShowRedirectMessage] = useState(false);
+  const redirectMessageTimeout = 2000;
 
   const navigate = useNavigate();
 
@@ -34,19 +34,15 @@ const LoginPage = () => {
       authenticate();
       navigate("/");
     } catch (error) {
-
       setErrorMessage("Incorrect credentials. Try again");
 
       setFailedAttempts(failedAttempts + 1);
 
-    
       if (failedAttempts >= maxFailedAttempts - 1) {
-
         setShowRedirectMessage(true);
 
-  
         setTimeout(() => {
-          navigate("/signup"); 
+          navigate("/signup");
         }, redirectMessageTimeout);
       }
     }
