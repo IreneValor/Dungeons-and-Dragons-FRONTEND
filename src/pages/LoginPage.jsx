@@ -10,10 +10,15 @@ const LoginPage = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [failedAttempts, setFailedAttempts] = useState(0); 
+  const maxFailedAttempts = 2; 
+
+  const [showRedirectMessage, setShowRedirectMessage] = useState(false); 
+  const redirectMessageTimeout = 2000; 
 
   const navigate = useNavigate();
 
-  const { authenticate, storeToken, error } = useContext(AuthContext);
+  const { authenticate, storeToken } = useContext(AuthContext);
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
@@ -29,32 +34,35 @@ const LoginPage = () => {
       authenticate();
       navigate("/");
     } catch (error) {
-      // Captura el error y establece el mensaje de error en el estado local
-      setErrorMessage(
-        "Credenciales incorrectas. Por favor, inténtelo de nuevo."
-      );
+
+      setErrorMessage("Incorrect credentials. Try again");
+
+      setFailedAttempts(failedAttempts + 1);
+
+    
+      if (failedAttempts >= maxFailedAttempts - 1) {
+
+        setShowRedirectMessage(true);
+
+  
+        setTimeout(() => {
+          navigate("/signup"); 
+        }, redirectMessageTimeout);
+      }
     }
   };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   authService.login(loginData).then(({ data }) => {
-  //     storeToken(data.authToken);
-  //     authenticate();
-  //     navigate("/");
-  //   });
-  // };
 
   const { password, email } = loginData;
 
   return (
     <form onSubmit={handleSubmit}>
-      <div class="mb-3">
-        <label for="email" class="form-label">
+      <div className="mb-3">
+        <label htmlFor="email" className="form-label">
           Email
         </label>
         <input
           type="email"
-          class="form-control"
+          className="form-control"
           id="email"
           value={email}
           onChange={handleInputChange}
@@ -62,13 +70,13 @@ const LoginPage = () => {
         />
       </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">
           Password
         </label>
         <input
           type="password"
-          class="form-control"
+          className="form-control"
           id="password"
           value={password}
           onChange={handleInputChange}
@@ -83,22 +91,14 @@ const LoginPage = () => {
       </div>
 
       {errorMessage && <p className="text-danger">{errorMessage}</p>}
+
+      {showRedirectMessage && (
+        <p className="text-success">
+          redirecting to Signup on {redirectMessageTimeout / 1000} segundos...
+        </p>
+      )}
     </form>
   );
 };
 
 export default LoginPage;
-
-{
-  /* <div class="mb-3">
-        <button type="submit" class="btn btn-primary">
-          Login
-        </button>
-      </div>
-      {error && <p>{error}</p>}
-    </form>
-  );
-};
-
-export default LoginPage; */
-}
