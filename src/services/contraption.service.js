@@ -17,8 +17,8 @@ class ContraptionService {
     return this.api.delete(`/contraptions/${id}`);
   }
 
-  getAll() {
-    return this.api.get(`/contraptions`);
+  getAll(page) {
+    return this.api.get(`/contraptions?page=${page}`);
   }
 
   getOne(id) {
