@@ -25,7 +25,7 @@ const alignmentOptions = [
 
  const [data, setData] = useState({
    class: classOptions[0],
-   alignment: alignmentOptions[0] // Corregir el nombre del campo a "class"
+   alignment: alignmentOptions[0] 
  });
 ;
  const [loading, setLoading] = useState(false);
@@ -135,15 +135,7 @@ const CharacterCreateForm = ({ onSubmit, loading }) => {
             ))}
           </select>
         </div>
-        {/* <div>
-          <label htmlFor="alignment">Alignment</label>
-          <input
-            type="text"
-            name="alignment"
-            value={data.alignment}
-            onChange={handleChange}
-          />
-        </div> */}
+     
         <div>
           <label htmlFor="image">Image</label>
           <input type="file" name="image" onChange={handleImageChange} />

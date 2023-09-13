@@ -35,7 +35,6 @@ export default function CreateCharacterPage() {
   const navigate = useNavigate();
   const inputImageRef = createRef();
 
-  // Handle data change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -44,7 +43,7 @@ export default function CreateCharacterPage() {
     }));
   };
 
-  // Handle image upload
+
   const handleImageUpload = (e) => {
     const input = inputImageRef.current;
     if (input) {
@@ -64,7 +63,7 @@ export default function CreateCharacterPage() {
     }
   };
 
-  // Handle form submit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

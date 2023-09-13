@@ -17,7 +17,7 @@ export default function Spell({
   const handleDelete = async () => {
     try {
       await spellsService.delete(_id);
-      deleteSpell(_id); //es id o _id ? esta en mongo guardado...pero funciona
+      deleteSpell(_id); 
     } catch (error) {
 
     }

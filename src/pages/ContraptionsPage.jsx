@@ -11,19 +11,24 @@ function ContraptionsPage() {
   const [showCreateContraption, setShowCreateContraption] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [contraptionCreated, setContraptionCreated] = useState(false);
-  const { characterId } = useParams(); // id personaje
-  const isDetails = true;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { characterId } = useParams();
+
 
   useEffect(() => {
-    getContraptions();
-  }, []);
-
-  const getContraptions = async () => {
+    getContraptions(currentPage);
+  }, [currentPage]);
+  const getContraptions = async (page) => {
     try {
-      const res = await contraptionService.getAll();
-      setContraptions(res.data);
-    } catch (error) {}
+      const res = await contraptionService.getAll(page);
+      setContraptions(res.data.contraptionsData);
+      setTotalPages(res.data.totalPages);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   const deleteContraption = async (id) => {
     try {
       await contraptionService.delete(id);
@@ -51,7 +56,6 @@ function ContraptionsPage() {
   };
 
   const handleContraptionChoose = async (contraptionId) => {
-    //AGREGAR CONTRAPTION AL CHARACTER
     try {
       await contraptionService.addContraptions(characterId, [contraptionId]);
       toast.success("Gadget added to the bag", {
@@ -92,6 +96,18 @@ function ContraptionsPage() {
       ));
     } else {
       return <p>No hay datos</p>;
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
@@ -156,6 +172,17 @@ function ContraptionsPage() {
             </div>
           )}
         </div>
+      </div>
+      <div class="pagination-buttons">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Siguiente
+        </button>
       </div>
     </div>
   );

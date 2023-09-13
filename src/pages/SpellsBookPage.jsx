@@ -11,7 +11,7 @@ function SpellsBookPage() {
   const [showCreateSpell, setShowCreateSpell] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [spellCreated, setSpellCreated] = useState(false);
-  const { characterId } = useParams(); // id personaje
+  const { characterId } = useParams(); 
   const [selectedSpells, setSelectedSpells] = useState({});
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

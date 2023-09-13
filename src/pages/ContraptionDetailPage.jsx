@@ -26,7 +26,6 @@ export default function ContraptionDetailPage() {
 
   return (
     <div>
-      {/* <h1 class="mb-4">Contraption Detail</h1> */}
       {contraption ? (
         <div class="card">
           <ContraptionDetail getContraption={getContraption} {...contraption} />

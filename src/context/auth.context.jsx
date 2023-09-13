@@ -11,7 +11,6 @@ function AuthProviderWrapper({ children }) {
     error: null,
   });
 
-
   useEffect(() => {
     authenticate();
   }, []);
@@ -21,10 +20,16 @@ function AuthProviderWrapper({ children }) {
   };
 
   const removeToken = () => {
-    localStorage.removeItem(TOKEN_NAME); 
+    localStorage.removeItem(TOKEN_NAME);
   };
 
-  const logout = () => {
+
+  const logout = async () => {
+    try {
+    } catch (err) {
+      console.error("Error al cerrar sesión:", err);
+    }
+
     setUserData((prevData) => ({
       ...prevData,
       loading: false,
@@ -33,8 +38,9 @@ function AuthProviderWrapper({ children }) {
     removeToken();
   };
 
+
+
   const authenticate = async () => {
-    //verifica que el token coincide.solicitud al servidor para ver si coincide con los headers
     const token = localStorage.getItem(TOKEN_NAME);
     if (!token) {
       logout();

@@ -1,4 +1,3 @@
-import { TOKEN_NAME } from "../context/auth.context";
 import apiInstance from "./apiInstance";
 
 class AuthService {
@@ -27,6 +26,10 @@ class AuthService {
       return Promise.reject("Token no válido");
     }
     return this.api.get(`/characters/${userId}`);
+  }
+
+  logout() {
+    return this.api.post("/auth/logout");
   }
 }
 

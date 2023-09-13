@@ -28,7 +28,6 @@ function App() {
           }
         />
 
-        {/* DETALLE DEL PERSONAJE */}
         <Route
           path="/characters/:id"
           element={
@@ -38,7 +37,6 @@ function App() {
           }
         />
 
-        {/* CONTRAPTIONS DEL PERSONAJE */}
         <Route
           path="/characters/:characterId/contraptions"
           element={
@@ -47,7 +45,7 @@ function App() {
             </Private>
           }
         />
-        {/* DETALLE CONTRAPTIONS PERSONAJE */}
+
         <Route
           path="/characters/:characterId/contraptions/:id"
           element={
@@ -56,7 +54,7 @@ function App() {
             </Private>
           }
         />
-        {/* TODOS SPELLS DEL PERSONAJE */}
+
         <Route
           path="/characters/:characterId/spells"
           element={
@@ -66,7 +64,6 @@ function App() {
           }
         />
 
-        {/* DETALLES DEL SPELL DEL PERSONAJE */}
         <Route
           path="/characters/:characterId/spells/:id"
           element={
@@ -76,7 +73,6 @@ function App() {
           }
         />
 
-        {/* CREAR NUEVO PERSONAJE */}
         <Route
           path="/characters/create"
           element={

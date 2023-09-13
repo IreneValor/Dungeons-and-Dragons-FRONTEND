@@ -17,15 +17,14 @@ class ContraptionService {
     return this.api.delete(`/contraptions/${id}`);
   }
 
-  getAll() {
-    return this.api.get(`/contraptions`);
+  getAll(page) {
+    return this.api.get(`/contraptions?page=${page}`);
   }
 
   getOne(id) {
     return this.api.get(`/contraptions/${id}`);
   }
   getByIndex(id) {
-    // return this.api.get(`/contraptions/${id}`);
     return this.api.get(`https://www.dnd5eapi.co/api/equipment/${id}`);
   }
   addContraptions(characterId, contraptions) {

@@ -26,7 +26,6 @@ export default function Character({
         {
           label: "Sí",
           onClick: async () => {
-            // Aquí se realiza la acción de eliminación si el usuario elige "Sí"
             try {
               const token = localStorage.getItem(TOKEN_NAME);
               if (!token) {

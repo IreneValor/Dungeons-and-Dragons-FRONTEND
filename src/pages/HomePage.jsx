@@ -5,6 +5,7 @@ import Character from "../components/Character";
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";
 
+
 export const HomePage = () => {
   const [characters, setCharacters] = useState([]);
 
@@ -16,7 +17,7 @@ export const HomePage = () => {
         return;
       }
 
-      const res = await charactersService.getAll(token); // Pasa el token como argumento
+      const res = await charactersService.getAll(token); 
 
 
       setCharacters(res.data);
