@@ -4,7 +4,7 @@ import Character from "../components/Character";
 
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";
-
+import Navbar from "../components/Navbar";
 
 export const HomePage = () => {
   const [characters, setCharacters] = useState([]);
@@ -13,16 +13,13 @@ export const HomePage = () => {
     try {
       const token = localStorage.getItem(TOKEN_NAME);
       if (!token) {
-
         return;
       }
 
-      const res = await charactersService.getAll(token); 
-
+      const res = await charactersService.getAll(token);
 
       setCharacters(res.data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -37,8 +34,7 @@ export const HomePage = () => {
       }
       await charactersService.delete(id);
       getCharacters();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const renderCharacters = () => {
@@ -53,9 +49,10 @@ export const HomePage = () => {
     ));
   };
 
-
   return (
     <div className="content-container">
+      <Navbar />
+      <div className="content-container"></div>
       <header>
         <h1>My Characters</h1>
       </header>

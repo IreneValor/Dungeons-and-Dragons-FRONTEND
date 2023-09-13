@@ -4,6 +4,7 @@ import authService from "../services/auth.service";
 export const TOKEN_NAME = "authToken";
 
 const AuthContext = createContext();
+
 function AuthProviderWrapper({ children }) {
   const [userData, setUserData] = useState({
     user: null,
@@ -23,9 +24,10 @@ function AuthProviderWrapper({ children }) {
     localStorage.removeItem(TOKEN_NAME);
   };
 
-
   const logout = async () => {
     try {
+      console.log("Intento de logout");
+      await authService.logout();
     } catch (err) {
       console.error("Error al cerrar sesión:", err);
     }
@@ -38,8 +40,6 @@ function AuthProviderWrapper({ children }) {
     removeToken();
   };
 
-
-
   const authenticate = async () => {
     const token = localStorage.getItem(TOKEN_NAME);
     if (!token) {
@@ -51,6 +51,7 @@ function AuthProviderWrapper({ children }) {
     }));
     try {
       const user = await authService.verify(token);
+      console.log("Usuario autenticado:", user);
       setUserData((prevData) => ({
         ...prevData,
         loading: false,
@@ -83,4 +84,3 @@ function AuthProviderWrapper({ children }) {
 }
 
 export { AuthProviderWrapper, AuthContext };
-

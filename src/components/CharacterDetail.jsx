@@ -249,7 +249,6 @@ export default function CharacterDetail({
     );
   };
 
-
   return (
     <div>
       <ToastContainer />

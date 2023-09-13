@@ -113,6 +113,9 @@ function ContraptionsPage() {
   const [searchValue, setSearchValue] = useState("");
   const [contraptionCreated, setContraptionCreated] = useState(false);
   const { characterId } = useParams(); // id personaje
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const isDetails = true;
 
   useEffect(() => {
