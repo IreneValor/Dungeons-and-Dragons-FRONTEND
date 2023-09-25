@@ -26,7 +26,7 @@ function AuthProviderWrapper({ children }) {
 
   const logout = async () => {
     try {
-      console.log("Intento de logout");
+      console.log("LOGOUT CORRECTO");
       await authService.logout();
     } catch (err) {
       console.error("Error al cerrar sesión:", err);

@@ -5,40 +5,49 @@ import spellsService from "../services/spells.service";
 import { Link, useLocation, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import Pagination from "../components/Pagination";
 
 function SpellsBookPage() {
   const [spells, setSpells] = useState(null);
   const [showCreateSpell, setShowCreateSpell] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [spellCreated, setSpellCreated] = useState(false);
-  const { characterId } = useParams(); 
+  const { characterId } = useParams();
   const [selectedSpells, setSelectedSpells] = useState({});
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const level = queryParams.get("level");
-  const className = queryParams.get("className");
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const spellsPerPage = 10;
+  let filteredSpells = [];
 
-  const getSpellsByClassAndLevel = async (spellClass, level) => {
+  const getSpellsByLevel = async (level) => {
+    console.log("LEVEL getSpellsByLevel", level);
+
     try {
-      const res = await spellsService.getFilteredByClassAndLevel(
-        spellClass,
-        level
-      );
+      const res = await spellsService.getFilteredByLevel(level);
+
+      console.log("Filtered spells:", res.data);
 
       setSpells(res.data);
     } catch (error) {
+      console.error("Error fetching spells:", error);
     }
   };
 
   useEffect(() => {
-    getSpellsByClassAndLevel("wizard", 1);
-  }, []);
+    console.log(level, "SPELLBOOK USEEFFECT");
+
+    if (level) {
+      getSpellsByLevel(level);
+    }
+  }, [level]);
 
   const deleteSpell = async (id) => {
     try {
       await spellsService.delete(id);
-      getSpellsByClassAndLevel("wizard", 1);
+      getSpellsByLevel("characterId", "spellId");
       toast.success("Hechizo eliminado correctamente", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -70,9 +79,7 @@ function SpellsBookPage() {
       toast.success("Spell añadido a la mochila", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
 
   const handleRemoveSpell = async (characterId, spellId) => {
@@ -82,10 +89,7 @@ function SpellsBookPage() {
       toast.success("Contraption eliminado de la mochila", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
   };
 
   const handleSearchChange = (event) => {
@@ -94,6 +98,8 @@ function SpellsBookPage() {
 
   const renderSpells = () => {
     let filteredSpells = spells;
+
+    // Filtrar hechizos por la palabra de búsqueda
     if (searchValue) {
       const searchQuery = searchValue.toLowerCase();
       filteredSpells = spells.filter(
@@ -101,8 +107,16 @@ function SpellsBookPage() {
       );
     }
 
-    if (filteredSpells && filteredSpells.length > 0) {
-      return filteredSpells.map((spell) => (
+    // Calculate the range of spells to display
+    const indexOfLastSpell = currentPage * spellsPerPage;
+    const indexOfFirstSpell = indexOfLastSpell - spellsPerPage;
+    const currentSpells = filteredSpells.slice(
+      indexOfFirstSpell,
+      indexOfLastSpell
+    );
+
+    if (currentSpells && currentSpells.length > 0) {
+      return currentSpells.map((spell) => (
         <Spell
           key={spell._id || spell.index}
           _id={spell._id || spell.index}
@@ -119,6 +133,13 @@ function SpellsBookPage() {
     }
   };
 
+  // Use useEffect to change currentPage after rendering
+  useEffect(() => {
+    if (searchValue) {
+      setCurrentPage(1);
+    }
+  }, [searchValue]);
+
   return (
     <div>
       <div class="content-buttons-div">
@@ -126,6 +147,12 @@ function SpellsBookPage() {
           <Link to={`/characters/${characterId}`}>Return to character</Link>
         </button>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalItems={filteredSpells.length}
+        itemsPerPage={spellsPerPage}
+      />
 
       <div className="justify-content-center">
         <div class="content-container">
@@ -146,9 +173,9 @@ function SpellsBookPage() {
           {showCreateSpell && !spellCreated && (
             <div>
               <CreateSpell
-                getSpells={getSpellsByClassAndLevel}
+                getSpells={getSpellsByLevel}
                 onCancel={handleCancelAddSpell}
-                // characterId={characterId}
+                characterId={characterId}
               />
             </div>
           )}
@@ -176,6 +203,7 @@ function SpellsBookPage() {
               <div className="spells-cards">{renderSpells()}</div>
             )}
           </div>
+
           {spellCreated && (
             <div>
               <p>Spell creado correctamente</p>

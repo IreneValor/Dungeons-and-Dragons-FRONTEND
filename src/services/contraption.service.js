@@ -33,6 +33,9 @@ class ContraptionService {
     });
   }
   removeContraption(characterId, contraptionId) {
+    console.log(
+      `/characters/${characterId}/removeContraption/${contraptionId}`
+    );
     return this.api.delete(
       `/characters/${characterId}/removeContraption/${contraptionId}`
     );

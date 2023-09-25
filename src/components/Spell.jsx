@@ -17,24 +17,18 @@ export default function Spell({
   const handleDelete = async () => {
     try {
       await spellsService.delete(_id);
-      deleteSpell(_id); 
-    } catch (error) {
-
-    }
+      deleteSpell(_id);
+    } catch (error) {}
   };
   const handleChoose = async () => {
     try {
       await handleSpellChoose(_id);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const handleRemove = async () => {
     try {
-      await handleRemoveSpell(characterId, _id);
-    } catch (error) {
-
-    }
+      await handleRemoveSpell(_id, characterId);
+    } catch (error) {}
   };
   return (
     <div class="spell-card">
@@ -82,7 +76,12 @@ export default function Spell({
             </div>
           ) : null}
           <div class="col-sm-6 col-md-4 col-lg-3">
-            <Link to={`/characters/${characterId}/spells/${_id}`}>
+            {/* <Link to={`/characters/${characterId}/spells/${_id || index}`}> */}
+            <Link
+              to={`/characters/${characterId}/spells/${
+                _id || index
+              }?level=${level}`}
+            >
               <button class="icon-button">
                 {" "}
                 ⌕ <p>Details</p>

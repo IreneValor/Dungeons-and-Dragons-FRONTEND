@@ -8,6 +8,7 @@ function CharactersPage() {
   const { id } = useParams();
 
   useEffect(() => {
+    console.log(id, "ID CHARACTERDETILSPAGE");
     getCharacter();
   }, [id]);
 
@@ -15,8 +16,7 @@ function CharactersPage() {
     try {
       const res = await charactersService.getOne(id);
       setCharacter(res.data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleAddCharacter = () => {

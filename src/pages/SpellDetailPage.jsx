@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import SpellDetail from "../components/SpellDetail";
 import spellsService from "../services/spells.service";
 
 const SpellDetailPage = () => {
-  const { id } = useParams();
+  const { id, characterId } = useParams();
   const [spell, setSpell] = useState(null);
   const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
+  const queryParams = new URLSearchParams(location.search);
+  const level = queryParams.get("level");
 
   useEffect(() => {
     const getSpell = async () => {
@@ -18,8 +20,7 @@ const SpellDetailPage = () => {
           res = await spellsService.getByIndex(id);
         }
         setSpell(res.data);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     getSpell();
@@ -28,6 +29,14 @@ const SpellDetailPage = () => {
   return (
     <div className="bg-transparent">
       {spell ? <SpellDetail spell={spell} /> : <p>No data available</p>}
+      <button class="btn btn-primary primary-button">
+        <Link to={`/characters/${characterId}`}>Return to character</Link>
+      </button>
+      <button class="btn btn-primary primary-button">
+        <Link to={`/characters/${id}/spells?level=${level}`}>
+          Spells lists{" "}
+        </Link>
+      </button>
     </div>
   );
 };

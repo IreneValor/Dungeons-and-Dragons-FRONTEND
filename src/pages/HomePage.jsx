@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Character from "../components/Character";
+import { AuthContext } from "../context/auth.context";
 
 import { TOKEN_NAME } from "../context/auth.context";
 import charactersService from "../services/characters.service";
@@ -51,7 +52,7 @@ export const HomePage = () => {
 
   return (
     <div className="content-container">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="content-container"></div>
       <header>
         <h1>My Characters</h1>

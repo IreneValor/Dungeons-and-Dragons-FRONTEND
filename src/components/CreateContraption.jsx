@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import contraptionService from "../services/contraption.service";
 
-export default function CreateContraption({ getContraptions }) {
+export default function CreateContraption({ getContraptions, onCancel }) {
   const [data, setData] = useState({
     name: "",
     type: "",
@@ -9,6 +9,7 @@ export default function CreateContraption({ getContraptions }) {
     quantity: 0,
   });
   const [loading, setLoading] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(true);
 
   const handleChange = (e) => {
     setData({
@@ -30,55 +31,67 @@ export default function CreateContraption({ getContraptions }) {
         description: "",
         quantity: 0,
       });
+      setIsFormOpen(false);
     } catch (error) {
       setLoading(false);
     }
   };
+  const handleCancel = () => {
 
+    setIsFormOpen(false);
+  
+    onCancel();
+  };
   return (
     <div>
-      <h2>Crear artilugio</h2>
-      <form onSubmit={handleSubmit}>
+      {isFormOpen && ( 
         <div>
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            value={data.name || ""}
-            onChange={handleChange}
-          />
+          <h2>Crear artilugio</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="name">Nombre</label>
+              <input
+                type="text"
+                name="name"
+                value={data.name || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="type">Tipo</label>
+              <input
+                type="text"
+                name="type"
+                value={data.type || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="description">Descripción</label>
+              <input
+                type="text"
+                name="description"
+                value={data.description || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="quantity">Cantidad</label>
+              <input
+                type="number"
+                name="quantity"
+                value={data.quantity || ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button type="submit">Save</button>
+            <button type="button" onClick={handleCancel}>
+              Cancel
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="type">Tipo</label>
-          <input
-            type="text"
-            name="type"
-            value={data.type || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Descripción</label>
-          <input
-            type="text"
-            name="description"
-            value={data.description || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="quantity">Cantidad</label>
-          <input
-            type="number"
-            name="quantity"
-            value={data.quantity || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button type="submit">Save</button>
-        </div>
-      </form>
+      )}
     </div>
   );
 }

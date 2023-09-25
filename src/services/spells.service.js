@@ -21,8 +21,8 @@ class SpellsService {
     return this.api.get("/spells");
   }
 
-  getFilteredByClassAndLevel(className, level) {
-    return this.api.get(`/spells?className=${className}&level=${level}`);
+  getFilteredByLevel(level) {
+    return this.api.get(`/spells?level=${level}`);
   }
 
   getOne(id) {
@@ -37,6 +37,7 @@ class SpellsService {
     });
   }
   removeSpell(characterId, spellId) {
+    console.log(`/characters/${characterId}/removeSpell/${spellId}`);
     return this.api.delete(`/characters/${characterId}/removeSpell/${spellId}`);
   }
 }

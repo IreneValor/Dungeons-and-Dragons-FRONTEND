@@ -225,7 +225,7 @@ const SpellDetail = ({ spell }) => {
           )}
         </p>
       )}
-      <p>
+      {/* <p>
         Classes:{" "}
         {isEditing ? (
           <input
@@ -237,7 +237,7 @@ const SpellDetail = ({ spell }) => {
         ) : (
           loadedSpell.classes.map((cls) => cls.name).join(", ")
         )}
-      </p>
+      </p> */}
       <div class="content-buttons-div">
         {isEditing ? (
           <div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import contraptionService from "../services/contraption.service";
 
 export default function Contraption({
+
   _id,
   index,
   name,
