@@ -11,7 +11,7 @@ function ContraptionsPage() {
   const [showCreateContraption, setShowCreateContraption] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [contraptionCreated, setContraptionCreated] = useState(false);
-  const { characterId } = useParams(); // id personaje
+  const { characterId } = useParams();
 
   useEffect(() => {
     getContraptions();
@@ -21,9 +21,7 @@ function ContraptionsPage() {
     try {
       const res = await contraptionService.getAll();
       setContraptions(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const deleteContraption = async (id) => {
@@ -176,5 +174,3 @@ function ContraptionsPage() {
 }
 
 export default ContraptionsPage;
-
-

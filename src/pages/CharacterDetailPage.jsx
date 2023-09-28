@@ -8,7 +8,6 @@ function CharactersPage() {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(id, "ID CHARACTERDETILSPAGE");
     getCharacter();
   }, [id]);
 

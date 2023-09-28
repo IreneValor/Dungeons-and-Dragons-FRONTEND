@@ -1,29 +1,16 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { TOKEN_NAME } from "../context/auth.context";
+import contraptionService from "../services/contraption.service";
 
 export default function EditContraptionForm({
   _id,
-  name,
-  description,
-  done,
+  initialValues,
   getContraption,
   redirectToDetail,
-  equipment_category,
-  cost,
-  weight,
+  onClose,
 }) {
-  const [data, setData] = useState({
-    _id,
-    name: name || "",
-    description: description || "",
-    done: done || false,
-    equipment_category: equipment_category?.name || "",
-    cost: cost,
-    weight: weight || 0,
-  });
-
-  const [isChecked, setIsChecked] = useState(done);
+  const [data, setData] = useState(initialValues);
+  console.log("initialValues", initialValues);
 
   const handleChange = (e) => {
     setData({
@@ -33,10 +20,9 @@ export default function EditContraptionForm({
   };
 
   const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
     setData({
       ...data,
-      done: e.target.checked,
+      [e.target.name]: e.target.checked,
     });
   };
 
@@ -44,14 +30,21 @@ export default function EditContraptionForm({
     e.preventDefault();
     try {
       const token = localStorage.getItem(TOKEN_NAME);
-      await axios.put(`http://localhost:5005/api/contraptions/${_id}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const updatedData = {};
+
+      for (const key in data) {
+        console.log("key", key);
+        console.log("data", data);
+        if (data[key] !== initialValues[key]) {
+          updatedData[key] = data[key];
+        }
+      }
+
+      await contraptionService.edit(_id, updatedData);
       getContraption();
       redirectToDetail();
     } catch (error) {
+      console.error(error);
     }
   };
 
@@ -69,17 +62,26 @@ export default function EditContraptionForm({
       <label>
         Description:
         <textarea
-          name="description"
-          value={data.description}
+          name="desc"
+          value={data.desc}
           onChange={handleChange}
         ></textarea>
+      </label>
+      <label>
+        Damage Dice:
+        <input
+          type="text"
+          name="damage_dice"
+          value={data.damage_dice}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Done:
         <input
           type="checkbox"
           name="done"
-          checked={isChecked}
+          checked={data.done}
           onChange={handleCheckboxChange}
         />
       </label>
@@ -96,17 +98,8 @@ export default function EditContraptionForm({
         Cost:
         <input
           type="text"
-          name="quantity"
-          value={data.cost.quantity}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Unit:
-        <input
-          type="text"
-          name="unit"
-          value={data.cost.unit}
+          name="cost"
+          value={data.cost}
           onChange={handleChange}
         />
       </label>
@@ -120,6 +113,10 @@ export default function EditContraptionForm({
         />
       </label>
       <button type="submit">Save</button>
+      <button type="button" onClick={onClose}>
+        Cancel
+      </button>
     </form>
   );
 }
+

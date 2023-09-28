@@ -37,7 +37,6 @@ class SpellsService {
     });
   }
   removeSpell(characterId, spellId) {
-    console.log(`/characters/${characterId}/removeSpell/${spellId}`);
     return this.api.delete(`/characters/${characterId}/removeSpell/${spellId}`);
   }
 }

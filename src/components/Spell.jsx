@@ -27,8 +27,11 @@ export default function Spell({
   };
   const handleRemove = async () => {
     try {
+      console.log("SPELL REMOVE !!_id, characterId ", _id, characterId);
       await handleRemoveSpell(_id, characterId);
-    } catch (error) {}
+    } catch (error) {
+      console.log("ERROR CAHTH SPELL REMOVE !!_id, characterId ", _id, characterId);
+    }
   };
   return (
     <div class="spell-card">

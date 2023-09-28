@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import contraptionService from "../services/contraption.service";
 
 export default function Contraption({
-
   _id,
   index,
   name,
@@ -17,22 +16,20 @@ export default function Contraption({
     try {
       await contraptionService.delete(_id);
       deleteContraption(_id);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleChoose = async () => {
     try {
       await handleContraptionChoose(_id);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleRemove = async () => {
     try {
+      console.log("CONTRAPTION REMOVE !!_id, characterId ",_id, characterId);
       await handleRemoveContraption(_id, characterId);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (

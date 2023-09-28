@@ -7,6 +7,8 @@ import Contraption from "./Contraption";
 import Spell from "./Spell";
 import contraptionService from "../services/contraption.service";
 import spellsService from "../services/spells.service";
+import EditCharacter from "../components/EditCharacter";
+import charactersService from "../services/characters.service";
 
 export default function CharacterDetail({
   _id,
@@ -20,17 +22,20 @@ export default function CharacterDetail({
   spellbook,
   className,
 }) {
-  console.log("_id:CHARACTERDETAIL", _id);
   const [isEditing, setIsEditing] = useState(false);
   const [contraptionsEdit, setContraptionsEdit] = useState(contraptions);
   const [spellsEdit, setSpellsEdit] = useState(spellbook);
   const [activeTab, setActiveTab] = useState("strength");
-  const [nameEdit, setNameEdit] = useState(name);
-  const [raceEdit, setRaceEdit] = useState(race);
-  const [classEdit, setClassEdit] = useState(characterClass);
-  const [levelEdit, setLevelEdit] = useState(level);
-  const [backgroundEdit, setBackgroundEdit] = useState(background);
-  const [alignmentEdit, setAlignmentEdit] = useState(alignment);
+  const [isEditingCharacter, setIsEditingCharacter] = useState(false);
+
+  const [characterData, setCharacterData] = useState({
+    name,
+    race,
+    classs: characterClass,
+    level,
+    background,
+    alignment,
+  });
 
   const [abilityScores, setAbilityScores] = useState({
     strength: {
@@ -102,20 +107,66 @@ export default function CharacterDetail({
   });
 
   useEffect(() => {
-    const savedData = localStorage.getItem(`editedCharacterData_${_id}`);
+    const fetchCharacterData = async () => {
+      try {
+        const response = await charactersService.getOne(_id); 
 
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setNameEdit(parsedData.name);
-      setRaceEdit(parsedData.race);
-      setClassEdit(parsedData.class);
-      setLevelEdit(parsedData.level);
-      setBackgroundEdit(parsedData.background);
-      setAlignmentEdit(parsedData.alignment);
-      setAbilityScores(parsedData.abilityScores);
-      setIsEditing(false); // Activar el modo de edición
+        if (response.status === 200) {
+          const characterDataFromServer = response.data;
+          setCharacterData(characterDataFromServer);
+          setIsEditingCharacter(false);
+        } else {
+          toast.error("An error occurred while fetching character data.");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("An error occurred while fetching character data.");
+      }
+    };
+
+    fetchCharacterData();
+  }, [_id]);
+
+  const handleEditCharacterClick = () => {
+    setIsEditingCharacter(true);
+  };
+
+  const calculateTotalScore = (ability) => {
+    const scores = abilityScores[ability];
+
+    const total =
+      scores.baseScore +
+      scores.racialBonus +
+      scores.abilityImprovements +
+      scores.miscBonus +
+      scores.setScore +
+      scores.otherModifier +
+      scores.overrideScore;
+
+    setAbilityScores((prevAbilityScores) => ({
+      ...prevAbilityScores,
+      [ability]: {
+        ...prevAbilityScores[ability],
+        totalScore: total,
+      },
+    }));
+  };
+  const handleSaveCharacter = async (updatedData) => {
+    try {
+      const response = await charactersService.edit(_id, updatedData); 
+
+      if (response.status === 200) {
+        setCharacterData(updatedData);
+        setIsEditingCharacter(false);
+        toast.success("Character updated successfully!");
+      } else {
+        toast.error("An error occurred while updating the character.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating the character.");
     }
-  }, [_id, `console.log(${_id}, esto es el _ID DE CHARACTERDETAIL)`]);
+  };
 
   const handleAbilityChange = (ability, field, value) => {
     setAbilityScores((prevAbilityScores) => ({
@@ -125,46 +176,16 @@ export default function CharacterDetail({
         [field]: value,
       },
     }));
-  };
-
-  const handleInputChange = (field, value) => {
-    switch (field) {
-      case "name":
-        setNameEdit(value);
-        break;
-      case "race":
-        setRaceEdit(value);
-        break;
-      case "class":
-        setClassEdit(value);
-        break;
-      case "level":
-        setLevelEdit(value);
-        break;
-      case "background":
-        setBackgroundEdit(value);
-        break;
-      case "alignment":
-        setAlignmentEdit(value);
-        break;
-      default:
-        break;
-    }
+    calculateTotalScore(ability);
   };
 
   const toggleEditMode = () => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
   };
-
   const saveChanges = async () => {
     try {
       const updatedData = {
-        name: nameEdit,
-        race: raceEdit,
-        class: classEdit,
-        level: levelEdit,
-        background: backgroundEdit,
-        alignment: alignmentEdit,
+        ...characterData,
         abilityScores: abilityScores,
       };
 
@@ -186,10 +207,6 @@ export default function CharacterDetail({
 
   const decreaseAbilityScore = (ability, field) => {
     handleAbilityChange(ability, field, abilityScores[ability][field] - 1);
-  };
-
-  const startEditing = () => {
-    setIsEditing(true);
   };
 
   const handleTabSelect = (tab) => {
@@ -268,6 +285,12 @@ export default function CharacterDetail({
     <div>
       <ToastContainer />
       <div className="content-buttons-div">
+        <button
+          className="btn btn-primary primary-button"
+          onClick={handleEditCharacterClick}
+        >
+          Edit Character
+        </button>
         <button className="btn btn-primary primary-button">
           <Link to={`/characters/${_id}/contraptions`} className="nav-link">
             Add gadgets
@@ -282,77 +305,37 @@ export default function CharacterDetail({
           </Link>
         </button>
       </div>
-      <header>
-        <h1>Character Details</h1>
-      </header>
-      <div className="detail-container">
-        <div className="row">
-          <div className="col-lg-4 col-sm-12">
-            {isEditing ? (
-              <input
-                type="text"
-                value={nameEdit}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-              />
-            ) : (
-              <p>Name: {name}</p>
-            )}
-            {isEditing ? (
-              <input
-                type="text"
-                value={raceEdit}
-                onChange={(e) => handleInputChange("race", e.target.value)}
-              />
-            ) : (
-              <p>Race: {race}</p>
-            )}
+
+      {isEditingCharacter ? (
+        <div className="detail-container">
+          <h1>Edit Character</h1>
+          <EditCharacter
+            initialValues={characterData}
+            onSave={handleSaveCharacter}
+            onCancel={() => setIsEditingCharacter(false)}
+          />
+        </div>
+      ) : (
+        <div className="detail-container">
+          <div className="row">
+            <div className="col-lg-4 col-sm-12">
+              <p>Name: {characterData.name}</p>
+              <p>Race: {characterData.race}</p>
+            </div>
+            <div className="col-lg-4 col-sm-12">
+              <p>Class: {characterData.classs}</p>
+              <p>Level: {characterData.level}</p>
+            </div>
+            <div className="col-lg-4 col-sm-12">
+              <p>Alignment: {characterData.alignment}</p>
+            </div>
           </div>
-          <div className="col-lg-4 col-sm-12">
-            {isEditing ? (
-              <input
-                type="text"
-                value={classEdit}
-                onChange={(e) => handleInputChange("class", e.target.value)}
-              />
-            ) : (
-              <p>Class: {characterClass}</p>
-            )}
-            {isEditing ? (
-              <input
-                type="number"
-                value={levelEdit}
-                onChange={(e) =>
-                  handleInputChange("level", parseInt(e.target.value))
-                }
-              />
-            ) : (
-              <p>Level: {level}</p>
-            )}
-          </div>
-          <div className="col-lg-4 col-sm-12">
-            {isEditing ? (
-              <input
-                type="text"
-                value={alignmentEdit}
-                onChange={(e) => handleInputChange("alignment", e.target.value)}
-              />
-            ) : (
-              <p>Alignment: {alignment}</p>
-            )}
+          <div className="row">
+            <p>Background: {characterData.background}</p>
           </div>
         </div>
-        <div className="row">
-          {isEditing ? (
-            <input
-              type="text"
-              value={backgroundEdit}
-              onChange={(e) => handleInputChange("background", e.target.value)}
-            />
-          ) : (
-            <p>Background: {background}</p>
-          )}
-        </div>
-      </div>
+      )}
+
       <header>
         <h1>Ability Scores</h1>
       </header>

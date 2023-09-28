@@ -26,10 +26,8 @@ function AuthProviderWrapper({ children }) {
 
   const logout = async () => {
     try {
-      console.log("LOGOUT CORRECTO");
       await authService.logout();
     } catch (err) {
-      console.error("Error al cerrar sesión:", err);
     }
 
     setUserData((prevData) => ({
@@ -51,7 +49,6 @@ function AuthProviderWrapper({ children }) {
     }));
     try {
       const user = await authService.verify(token);
-      console.log("Usuario autenticado:", user);
       setUserData((prevData) => ({
         ...prevData,
         loading: false,

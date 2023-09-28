@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/auth.service";
-const API_URL = "http://localhost:5005"; //QUITAR
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SignupPage = () => {
   const [signupData, setSignupData] = useState({

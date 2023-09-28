@@ -23,22 +23,15 @@ function SpellsBookPage() {
   let filteredSpells = [];
 
   const getSpellsByLevel = async (level) => {
-    console.log("LEVEL getSpellsByLevel", level);
-
     try {
-      const res = await spellsService.getFilteredByLevel(level);
-
-      console.log("Filtered spells:", res.data);
+      const res = await spellsService.getFilteredByLevel(level)
 
       setSpells(res.data);
     } catch (error) {
-      console.error("Error fetching spells:", error);
     }
   };
 
   useEffect(() => {
-    console.log(level, "SPELLBOOK USEEFFECT");
-
     if (level) {
       getSpellsByLevel(level);
     }
@@ -99,7 +92,6 @@ function SpellsBookPage() {
   const renderSpells = () => {
     let filteredSpells = spells;
 
-    // Filtrar hechizos por la palabra de búsqueda
     if (searchValue) {
       const searchQuery = searchValue.toLowerCase();
       filteredSpells = spells.filter(
@@ -107,7 +99,6 @@ function SpellsBookPage() {
       );
     }
 
-    // Calculate the range of spells to display
     const indexOfLastSpell = currentPage * spellsPerPage;
     const indexOfFirstSpell = indexOfLastSpell - spellsPerPage;
     const currentSpells = filteredSpells.slice(
@@ -133,7 +124,7 @@ function SpellsBookPage() {
     }
   };
 
-  // Use useEffect to change currentPage after rendering
+
   useEffect(() => {
     if (searchValue) {
       setCurrentPage(1);

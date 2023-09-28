@@ -4,52 +4,63 @@ import contraptionService from "../services/contraption.service";
 export default function CreateContraption({ getContraptions, onCancel }) {
   const [data, setData] = useState({
     name: "",
-    type: "",
-    description: "",
-    quantity: 0,
+    desc: "",
+    equipment_category: "",
+    cost: "",
+    weight: 0,
   });
+
   const [loading, setLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await contraptionService.create(data);
+      await contraptionService.create({
+        ...data,
+        cost: {
+          quantity: data.cost.split(" ")[0],
+          unit: data.cost.split(" ")[1],
+        },
+      });
       getContraptions();
       setLoading(false);
       setData({
         name: "",
-        type: "",
-        description: "",
-        quantity: 0,
+        desc: "",
+        equipment_category: "",
+        cost: "",
+        weight: 0,
       });
       setIsFormOpen(false);
     } catch (error) {
       setLoading(false);
     }
   };
-  const handleCancel = () => {
 
+  const handleCancel = () => {
     setIsFormOpen(false);
-  
     onCancel();
   };
+
   return (
     <div>
-      {isFormOpen && ( 
+      {isFormOpen && (
         <div>
-          <h2>Crear artilugio</h2>
+          <h2>Create Gadget</h2>
           <form onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name">Nombre</label>
+              <label htmlFor="name">Name</label>
               <input
                 type="text"
                 name="name"
@@ -58,29 +69,47 @@ export default function CreateContraption({ getContraptions, onCancel }) {
               />
             </div>
             <div>
-              <label htmlFor="type">Tipo</label>
+              <label htmlFor="desc">Description</label>
               <input
                 type="text"
-                name="type"
-                value={data.type || ""}
+                name="desc"
+                value={data.desc || ""}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label htmlFor="description">Descripción</label>
+              <label htmlFor="cost">Cost</label>
               <input
                 type="text"
-                name="description"
-                value={data.description || ""}
+                name="cost"
+                value={data.cost || ""}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label htmlFor="quantity">Cantidad</label>
+              <label htmlFor="equipment_category">Equipment Category</label>
+              <input
+                type="text"
+                name="equipment_category"
+                value={data.equipment_category || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="weight">Weight</label>
               <input
                 type="number"
-                name="quantity"
-                value={data.quantity || ""}
+                name="weight"
+                value={data.weight || 0}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="damage_dice">Damage</label>
+              <input
+                type="text"
+                name="damage_dice"
+                value={data.damage_dice || ""}
                 onChange={handleChange}
               />
             </div>
