@@ -10,6 +10,8 @@ export default function ContraptionDetailPage() {
 
   const getContraption = async () => {
     try {
+      console.log("id", id);
+      console.log("characterId DETAILSCONTRAPTION", characterId);
       let res;
       if (isObjectId) {
         res = await contraptionService.getOne(id);
@@ -38,7 +40,9 @@ export default function ContraptionDetailPage() {
         <Link to={`/characters/${characterId}`}>Return to character</Link>
       </button>
       <button class="btn btn-primary primary-button">
-        <Link to={`/characters/${id}/contraptions`}>gadget lists </Link>
+        <Link to={`/characters/${characterId}/contraptions`}>
+          gadget lists{" "}
+        </Link>
       </button>
     </div>
   );

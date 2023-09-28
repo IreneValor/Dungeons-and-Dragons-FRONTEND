@@ -33,7 +33,7 @@ const SpellDetailPage = () => {
         <Link to={`/characters/${characterId}`}>Return to character</Link>
       </button>
       <button class="btn btn-primary primary-button">
-        <Link to={`/characters/${id}/spells?level=${level}`}>
+        <Link to={`/characters/${characterId}/spells?level=${level}`}>
           Spells lists{" "}
         </Link>
       </button>

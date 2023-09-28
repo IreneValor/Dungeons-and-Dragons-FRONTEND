@@ -8,7 +8,6 @@ export default function ContraptionDetail({
   damage_dice,
   done,
   equipment_category,
-
   cost,
   weight,
   getContraption,
