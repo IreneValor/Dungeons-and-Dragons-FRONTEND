@@ -51,9 +51,15 @@ function ContraptionsPage() {
     setShowCreateContraption(false);
   };
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
+const handleSearch = async () => {
+  try {
+    const res = await contraptionService.search(searchValue);
+    setContraptions(res.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
   const handleCancelContraptionCreated = () => {
     setContraptionCreated(false);
@@ -163,7 +169,10 @@ function ContraptionsPage() {
               type="text"
               className="form-control"
               value={searchValue}
-              onChange={handleSearchChange}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                handleSearch();
+              }}
               placeholder="Search for gadgets by name..."
             />
           </div>

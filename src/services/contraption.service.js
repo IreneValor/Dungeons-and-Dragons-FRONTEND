@@ -20,6 +20,9 @@ class ContraptionService {
   getAll(page) {
     return this.api.get(`/contraptions?page=${page}`);
   }
+  search(term) {
+    return this.api.get(`/contraptions/search?term=${term}`);
+  }
 
   getOne(id) {
     return this.api.get(`/contraptions/${id}`);
