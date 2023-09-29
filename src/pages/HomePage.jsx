@@ -52,8 +52,6 @@ export const HomePage = () => {
 
   return (
     <div className="content-container">
-      {/* <Navbar /> */}
-      <div className="content-container"></div>
       <header>
         <h1>My Characters</h1>
       </header>

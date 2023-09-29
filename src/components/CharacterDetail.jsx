@@ -27,6 +27,8 @@ export default function CharacterDetail({
   const [spellsEdit, setSpellsEdit] = useState(spellbook);
   const [activeTab, setActiveTab] = useState("strength");
   const [isEditingCharacter, setIsEditingCharacter] = useState(false);
+  const [isEditingAbilityScores, setIsEditingAbilityScores] = useState(false);
+  const [originalCharacterData, setOriginalCharacterData] = useState(null);
 
   const [characterData, setCharacterData] = useState({
     name,
@@ -105,15 +107,21 @@ export default function CharacterDetail({
       overrideScore: null,
     },
   });
-
   useEffect(() => {
-    const fetchCharacterData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await charactersService.getOne(_id); 
+        const savedData = localStorage.getItem(`editedCharacterData_${_id}`);
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setCharacterData(parsedData);
+          setAbilityScores(parsedData.abilityScores);
+        }
 
+        const response = await charactersService.getOne(_id);
         if (response.status === 200) {
           const characterDataFromServer = response.data;
           setCharacterData(characterDataFromServer);
+          setOriginalCharacterData(characterDataFromServer);
           setIsEditingCharacter(false);
         } else {
           toast.error("An error occurred while fetching character data.");
@@ -124,11 +132,23 @@ export default function CharacterDetail({
       }
     };
 
-    fetchCharacterData();
+    fetchData();
   }, [_id]);
+
+  const handleCancelEditAbilityScores = () => {
+    setIsEditingAbilityScores(false);
+    setAbilityScores(originalAbilityScores);
+  };
+
+  const setEditedAbilityScores = (abilityScores) => {
+    setOriginalAbilityScores(abilityScores);
+  };
 
   const handleEditCharacterClick = () => {
     setIsEditingCharacter(true);
+  };
+  const handleCancelEditCharacter = () => {
+    setIsEditingCharacter(false);
   };
 
   const calculateTotalScore = (ability) => {
@@ -151,13 +171,13 @@ export default function CharacterDetail({
       },
     }));
   };
+
   const handleSaveCharacter = async (updatedData) => {
     try {
-      const response = await charactersService.edit(_id, updatedData); 
+      const response = await charactersService.edit(_id, updatedData);
 
       if (response.status === 200) {
         setCharacterData(updatedData);
-        setIsEditingCharacter(false);
         toast.success("Character updated successfully!");
       } else {
         toast.error("An error occurred while updating the character.");
@@ -166,6 +186,21 @@ export default function CharacterDetail({
       console.error(error);
       toast.error("An error occurred while updating the character.");
     }
+  };
+  const handleSaveAbilityScores = async (updatedAbilityScores) => {
+    try {
+      setAbilityScores(updatedAbilityScores);
+      setIsEditingAbilityScores(false);
+      toast.success("Ability scores updated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating ability scores.");
+    }
+  };
+
+  const handleEditAbilityScoresClick = () => {
+    setIsEditingAbilityScores(true);
+    setEditedAbilityScores(abilityScores);
   };
 
   const handleAbilityChange = (ability, field, value) => {
@@ -182,22 +217,33 @@ export default function CharacterDetail({
   const toggleEditMode = () => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
   };
+
   const saveChanges = async () => {
-    try {
-      const updatedData = {
-        ...characterData,
-        abilityScores: abilityScores,
-      };
+    if (isEditing) {
+      try {
+        const updatedData = {
+          ...characterData,
+          abilityScores: abilityScores,
+        };
 
-      localStorage.setItem(
-        `editedCharacterData_${_id}`,
-        JSON.stringify(updatedData)
-      );
+        localStorage.setItem(
+          `editedCharacterData_${_id}`,
+          JSON.stringify(updatedData)
+        );
 
+        toggleEditMode();
+        toast.success("Changes saved successfully!");
+        console.log(
+          "Saved Character Data to GUARDAR CHARACTERDATA EN LOCALSTORAGE: ",
+          updatedData
+        );
+      } catch (error) {
+        toast.error(
+          "An error occurred while saving changes. Please try again."
+        );
+      }
+    } else {
       toggleEditMode();
-      toast.success("Changes saved successfully!");
-    } catch (error) {
-      toast.error("An error occurred while saving changes. Please try again.");
     }
   };
 
@@ -247,6 +293,7 @@ export default function CharacterDetail({
 
   const renderAbilityDetails = (ability) => {
     const scores = abilityScores[ability];
+
     return (
       <div className="m-3">
         {Object.entries(scores).map(([field, value]) => (
@@ -312,7 +359,8 @@ export default function CharacterDetail({
           <EditCharacter
             initialValues={characterData}
             onSave={handleSaveCharacter}
-            onCancel={() => setIsEditingCharacter(false)}
+            onCancel={handleCancelEditCharacter}
+            close={handleCancelEditCharacter}
           />
         </div>
       ) : (
@@ -415,7 +463,7 @@ export default function CharacterDetail({
               characterId={_id}
             />
           ))}
-        </div>{" "}
+        </div>
       </div>
     </div>
   );

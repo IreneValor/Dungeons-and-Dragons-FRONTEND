@@ -8,6 +8,7 @@ export default function ContraptionDetail({
   damage_dice,
   done,
   equipment_category,
+
   cost,
   weight,
   getContraption,
@@ -32,7 +33,7 @@ export default function ContraptionDetail({
       <p>Description: {desc}</p>
       <p>Damage: {damage_dice}</p>
       <p>Equipment Category: {equipment_category?.name}</p>
-  
+
       <p>
         Cost: {cost?.quantity && cost?.unit && `${cost.quantity} ${cost.unit}`}
       </p>

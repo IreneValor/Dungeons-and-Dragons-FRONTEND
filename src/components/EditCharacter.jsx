@@ -71,7 +71,9 @@ export default function EditCharacter({ initialValues, onSave, onCancel }) {
           onChange={handleChange}
         />
       </label>
-      <button type="submit">Save</button>
+      <button type="submit" >
+        Save
+      </button>
       <button type="button" onClick={onCancel}>
         Cancel
       </button>
