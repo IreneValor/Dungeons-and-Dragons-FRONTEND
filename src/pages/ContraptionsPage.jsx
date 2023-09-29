@@ -12,22 +12,27 @@ function ContraptionsPage() {
   const [searchValue, setSearchValue] = useState("");
   const [contraptionCreated, setContraptionCreated] = useState(false);
   const { characterId } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    getContraptions();
-  }, []);
+    getContraptions(currentPage);
+  }, [currentPage]);
 
-  const getContraptions = async () => {
+  const getContraptions = async (page) => {
     try {
-      const res = await contraptionService.getAll();
-      setContraptions(res.data);
-    } catch (error) {}
+      const res = await contraptionService.getAll(page);
+      setContraptions(res.data.contraptionsData);
+      setTotalPages(res.data.totalPages);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const deleteContraption = async (id) => {
     try {
       await contraptionService.delete(id);
-      getContraptions();
+      getContraptions(currentPage); 
       toast.success("Gadget removed", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -107,15 +112,27 @@ function ContraptionsPage() {
     }
   };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <div>
-      <div class="content-buttons-div">
-        <button class="btn btn-primary primary-button">
+      <div className="content-buttons-div">
+        <button className="btn btn-primary primary-button">
           <Link to={`/characters/${characterId}`}>Return to character</Link>
         </button>
       </div>
       <div className="d-flex justify-content-center">
-        <div class="content-container">
+        <div className="content-container">
           <ToastContainer />
 
           <header>
@@ -150,7 +167,7 @@ function ContraptionsPage() {
               placeholder="Search for gadgets by name..."
             />
           </div>
-          <div class="contraptions-cards">
+          <div className="contraptions-cards">
             <div className="row">
               {!contraptions ? (
                 <div className="text-center">
@@ -168,6 +185,17 @@ function ContraptionsPage() {
             </div>
           )}
         </div>
+      </div>
+      <div className="pagination-buttons">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
       </div>
     </div>
   );
