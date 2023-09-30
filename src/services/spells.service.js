@@ -24,6 +24,9 @@ class SpellsService {
   getFilteredByLevel(level) {
     return this.api.get(`/spells?level=${level}`);
   }
+  search(term) {
+    return this.api.get(`/spells/search?term=${term}`);
+  }
 
   getOne(id) {
     return this.api.get(`/spells/${id}`);

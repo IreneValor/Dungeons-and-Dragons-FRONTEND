@@ -147,6 +147,7 @@ export default function CharacterDetail({
   const handleEditCharacterClick = () => {
     setIsEditingCharacter(true);
   };
+
   const handleCancelEditCharacter = () => {
     setIsEditingCharacter(false);
   };
@@ -179,6 +180,7 @@ export default function CharacterDetail({
       if (response.status === 200) {
         setCharacterData(updatedData);
         toast.success("Character updated successfully!");
+        setIsEditing(false);
       } else {
         toast.error("An error occurred while updating the character.");
       }
@@ -360,7 +362,8 @@ export default function CharacterDetail({
             initialValues={characterData}
             onSave={handleSaveCharacter}
             onCancel={handleCancelEditCharacter}
-            close={handleCancelEditCharacter}
+            // close={handleCancelEditCharacter}
+            isEditing={isEditing}
           />
         </div>
       ) : (
@@ -409,13 +412,31 @@ export default function CharacterDetail({
           <div className="content-buttons-div">
             <button
               className="btn btn-primary primary-button"
-              onClick={saveChanges}
+              onClick={() => {
+                handleSaveCharacter(data);
+                setIsEditing(false);
+              }}
             >
               Save
             </button>
-            <button
+
+            {/* <button
               className="btn btn-primary primary-button"
-              onClick={toggleEditMode}
+              onClick={() => {
+                toggleEditMode()
+              }}
+            >
+              Cancel
+            </button> */}
+            <button
+              type="submit"
+              className="btn btn-primary primary-button"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleEditMode();
+                handleCancelEditAbilityScores(); // Llama a la función para cancelar la edición de las Ability Scores
+                // Cambia al modo de edición o cancela la edición
+              }}
             >
               Cancel
             </button>

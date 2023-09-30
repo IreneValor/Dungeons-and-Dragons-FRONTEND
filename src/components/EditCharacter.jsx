@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-export default function EditCharacter({ initialValues, onSave, onCancel }) {
+export default function C({
+  initialValues,
+  onSave,
+  onCancel,
+  close,
+  isEditing,
+}) {
   const [data, setData] = useState(initialValues);
 
   const handleChange = (e) => {
@@ -9,10 +15,10 @@ export default function EditCharacter({ initialValues, onSave, onCancel }) {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(data);
+    onCancel(); 
   };
 
   return (
@@ -71,7 +77,13 @@ export default function EditCharacter({ initialValues, onSave, onCancel }) {
           onChange={handleChange}
         />
       </label>
-      <button type="submit" >
+      <button
+        type="submit"
+        onClick={() => {
+          onSave(updatedData);
+          // close();
+        }}
+      >
         Save
       </button>
       <button type="button" onClick={onCancel}>

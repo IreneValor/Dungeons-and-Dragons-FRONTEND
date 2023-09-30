@@ -1,11 +1,11 @@
+//SIN PAGINACION DEVUELVE TODOS LOS HECHIZOS 
 import React, { useEffect, useState } from "react";
 import Spell from "../components/Spell";
 import CreateSpell from "../components/CreateSpell";
 import spellsService from "../services/spells.service";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import Pagination from "../components/Pagination";
 
 function SpellsBookPage() {
   const [spells, setSpells] = useState(null);
@@ -13,34 +13,29 @@ function SpellsBookPage() {
   const [searchValue, setSearchValue] = useState("");
   const [spellCreated, setSpellCreated] = useState(false);
   const { characterId } = useParams();
-  const [selectedSpells, setSelectedSpells] = useState({});
-  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const level = queryParams.get("level");
-  const [currentPage, setCurrentPage] = useState(1);
+    const level = queryParams.get("level");
 
-  const spellsPerPage = 10;
-  let filteredSpells = [];
 
-  const getSpellsByLevel = async (level) => {
-    try {
-      const res = await spellsService.getFilteredByLevel(level)
+ const getSpellsByLevel = async (level) => {
+   try {
+     const res = await spellsService.getFilteredByLevel(level);
 
-      setSpells(res.data);
-    } catch (error) {
-    }
-  };
-
-  useEffect(() => {
-    if (level) {
-      getSpellsByLevel(level);
-    }
-  }, [level]);
+     setSpells(res.data);
+   } catch (error) {}
+ };
+  
+  
+ useEffect(() => {
+   if (level) {
+     getSpellsByLevel(level);
+   }
+ }, [level]);
 
   const deleteSpell = async (id) => {
     try {
       await spellsService.delete(id);
-      getSpellsByLevel("characterId", "spellId");
+      getSpells();
       toast.success("Hechizo eliminado correctamente", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -57,36 +52,46 @@ function SpellsBookPage() {
   };
 
   const handleCancelAddSpell = () => {
-    setSpellCreated(false);
+    setShowCreateSpell(false);
   };
+
   const handleCancelSpellCreated = () => {
     setSpellCreated(false);
   };
+
   const handleSpellChoose = async (spellId) => {
-    setSelectedSpells((prevSelectedSpells) => ({
-      ...prevSelectedSpells,
-      [spellId]: !prevSelectedSpells[spellId],
-    }));
     try {
       await spellsService.addSpells(characterId, [spellId]);
-      toast.success("Spell añadido a la mochila", {
+      toast.success("Hechizo añadido a la mochila", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Error al añadir el hechizo a la mochila", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   const handleRemoveSpell = async (characterId, spellId) => {
     try {
       await spellsService.removeSpell(characterId, spellId);
-
-      toast.success("Contraption eliminado de la mochila", {
+      toast.success("Hechizo eliminado de la mochila", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Error al eliminar el hechizo de la mochila", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
+  const handleSearchChange = async () => {
+    try {
+      const res = await spellsService.search(searchValue);
+      setSpells(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const renderSpells = () => {
@@ -99,15 +104,8 @@ function SpellsBookPage() {
       );
     }
 
-    const indexOfLastSpell = currentPage * spellsPerPage;
-    const indexOfFirstSpell = indexOfLastSpell - spellsPerPage;
-    const currentSpells = filteredSpells.slice(
-      indexOfFirstSpell,
-      indexOfLastSpell
-    );
-
-    if (currentSpells && currentSpells.length > 0) {
-      return currentSpells.map((spell) => (
+    if (filteredSpells && filteredSpells.length > 0) {
+      return filteredSpells.map((spell) => (
         <Spell
           key={spell._id || spell.index}
           _id={spell._id || spell.index}
@@ -124,29 +122,16 @@ function SpellsBookPage() {
     }
   };
 
-
-  useEffect(() => {
-    if (searchValue) {
-      setCurrentPage(1);
-    }
-  }, [searchValue]);
-
   return (
     <div>
-      <div class="content-buttons-div">
-        <button class="btn btn-primary primary-button">
+      <div className="content-buttons-div">
+        <button className="btn btn-primary primary-button">
           <Link to={`/characters/${characterId}`}>Return to character</Link>
         </button>
       </div>
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalItems={filteredSpells.length}
-        itemsPerPage={spellsPerPage}
-      />
 
       <div className="justify-content-center">
-        <div class="content-container">
+        <div className="content-container">
           <ToastContainer />
           <header>
             <h1>Spells</h1>
@@ -164,7 +149,7 @@ function SpellsBookPage() {
           {showCreateSpell && !spellCreated && (
             <div>
               <CreateSpell
-                getSpells={getSpellsByLevel}
+                getSpells={getSpells}
                 onCancel={handleCancelAddSpell}
                 characterId={characterId}
               />
@@ -180,7 +165,10 @@ function SpellsBookPage() {
               type="text"
               className="form-control"
               value={searchValue}
-              onChange={handleSearchChange}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                handleSearchChange();
+              }}
               placeholder="Buscar hechizos por nombre..."
             />
           </div>
@@ -201,7 +189,7 @@ function SpellsBookPage() {
               <button onClick={handleCancelSpellCreated}>OK</button>
             </div>
           )}
-          <button class="btn btn-primary primary-button">
+          <button className="btn btn-primary primary-button">
             <Link to={`/characters/${characterId}`}>Return to character</Link>
           </button>
         </div>
